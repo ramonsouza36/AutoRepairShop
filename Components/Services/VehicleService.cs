@@ -4,12 +4,10 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 public partial class VehicleService : IRepository<Vehicle>
 {
     private readonly Repository<Vehicle>? _repository;
-    private readonly IdentityDbContext _identityDbContext;
     
     public VehicleService(Repository<Vehicle> repository, IdentityDbContext identityDbContext)
     {
         _repository = repository;
-        _identityDbContext = identityDbContext;
     }
 
     public void Add(Vehicle vehicle)

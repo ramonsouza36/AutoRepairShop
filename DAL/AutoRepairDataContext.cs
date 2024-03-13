@@ -7,7 +7,8 @@ public class AutoRepairDataContext : IdentityDbContext
     {
     }
 
-    //public DbSet<MyEntity> MyEntities { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<Client> Clients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
