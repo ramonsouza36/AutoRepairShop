@@ -1,23 +1,15 @@
 using System.Linq.Expressions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 public partial class VehicleService : IRepository<Vehicle>
 {
-    private readonly Repository<Vehicle>? _repository;
-    
-    public VehicleService(Repository<Vehicle> repository, IdentityDbContext identityDbContext)
-    {
-        _repository = repository;
-    }
-
     public void Add(Vehicle vehicle)
     {
-        _repository!.Add(vehicle);
+        Add(vehicle);
     }
 
     public void Delete(Vehicle vehicle)
     {
-        _repository!.Delete(vehicle);
+        Delete(vehicle);
     }
 
     public IEnumerable<Vehicle> Find(Expression<Func<Vehicle, bool>> predicate)
@@ -27,18 +19,18 @@ public partial class VehicleService : IRepository<Vehicle>
 
     public IEnumerable<Vehicle> GetAll()
     {
-       var vehicles =  _repository!.GetAll();
+       var vehicles =  GetAll();
        return vehicles;
     }
 
     public Vehicle GetById(int id)
     {
-        var vehicle = _repository!.GetById(id);
+        var vehicle = GetById(id);
         return vehicle;
     }
 
     public void Update(Vehicle vehicle)
     {
-        _repository!.Update(vehicle);
+        Update(vehicle);
     }
 }
