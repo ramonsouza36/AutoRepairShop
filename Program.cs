@@ -1,4 +1,5 @@
 using AutoRepairShop.Components;
+using AutoRepairShop.Components.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultTokenProviders();
 builder.Services.AddDbContext<AutoRepairDataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<ClientService>();    
+builder.Services.AddScoped<VehicleService>();    
+builder.Services.AddScoped<ProductService>();    
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

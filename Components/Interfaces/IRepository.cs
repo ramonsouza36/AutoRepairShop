@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 
+namespace AutoRepairShop.Components.Interfaces;
 public interface IRepository<TEntity> where TEntity : class
 {
     void Add(TEntity entity);

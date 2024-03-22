@@ -1,6 +1,8 @@
 using System.Linq.Expressions;
+using AutoRepairShop.Components.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
+namespace AutoRepairShop.Components.Services;
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     private readonly DbContext _context;
