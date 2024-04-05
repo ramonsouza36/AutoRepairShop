@@ -13,14 +13,14 @@ public partial class ProductService : IRepository<Product>
         context = ctx;
         repository = new Repository<Product>(context);
     }
-    public void Add(Product product)
+    public async Task Add(Product product)
     {
-        repository.Add(product);
+        await repository.Add(product);
     }
 
-    public void Delete(Product product)
+    public async Task DeleteAsync(Product product)
     {
-        repository.Delete(product);
+        await repository.DeleteAsync(product);
     }
 
     public IEnumerable<Product> Find(Expression<Func<Product, bool>> predicate)

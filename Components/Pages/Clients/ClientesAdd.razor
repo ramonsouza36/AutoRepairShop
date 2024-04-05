@@ -1,5 +1,10 @@
 @page "/clientesadd"
-@rendermode InteractiveServer
+@page "/clientesadd/{id:guid}"
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using AutoRepairShop.DAL.Models;
+@using AutoRepairShop.Components.Services;
+@inject ClientService clientService
 
 <PageTitle>Cadastro de Clientes</PageTitle>
 
@@ -10,21 +15,41 @@
         <i class="fas fa-arrow-left fa-lg text-center justify-content-center fs-5 mt-1"> Voltar</i>
     </a>
     <button class="btn btn-primary">
-        <i class="fas fa-save fa-lg text-center justify-content-center fs-5 mt-1"> Salvar</i>
+        <i class="fas fa-save fa-lg text-center justify-content-center fs-5 mt-1" @onclick = "(() => AddClient())"> Salvar</i>
     </button>
 </div>
 
 <div class="border border-2 border-dark mt-5">
   <div class="m-5">
     <label for="email" class="form-label">Nome:</label>
-    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+    <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@cliente.Name">
   </div>
   <div class="m-5">
     <label for="pwd" class="form-label">Documento:</label>
-    <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
+    <input type="text" class="form-control" id="documento" placeholder="Documento" name="documento" @bind-value="@cliente.DocumentNumber">
   </div>
   <div class="m-5">
     <label for="pwd" class="form-label">Telefone:</label>
-    <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
+    <input type="text" class="form-control" id="phone" placeholder="Telefone" name="phone" @bind-value="@cliente.Phone">
   </div>
 </div>
+
+@code{
+
+  [Parameter]
+  public Guid? id { get; set; }
+
+  public Client? cliente { get; set; }
+
+  protected override async Task OnParametersSetAsync()
+  {
+        cliente = new Client();
+        await Task.CompletedTask;
+  }
+
+  public async Task AddClient()
+  {
+    clientService.Add(cliente!);
+    await Task.CompletedTask;
+  }
+}

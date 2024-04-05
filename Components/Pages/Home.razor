@@ -8,13 +8,3 @@
 
 Welcome to your new app.
 
-@code{
-    protected override async Task OnInitializedAsync()
-    {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        Test();
-    }
-    private void Test(){
-        clientService.GetAll();
-    }
-}

@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using AutoRepairShop.Components.Interfaces;
 using AutoRepairShop.Components.Services;
+using AutoRepairShop.DAL.Models;
 
 namespace AutoRepairShop.Components.Services;
 public partial class ClientService : IRepository<Client>
@@ -15,14 +16,14 @@ public partial class ClientService : IRepository<Client>
         repository = new Repository<Client>(context);
     }
    
-    public void Add(Client client)
+    public async Task Add(Client client)
     {
-        repository.Add(client);
+        await repository.Add(client);
     }
 
-    public void Delete(Client client)
+    public async Task DeleteAsync(Client client)
     {
-        repository.Delete(client);
+        await repository.DeleteAsync(client);
     }
 
     public IEnumerable<Client> Find(Expression<Func<Client, bool>> predicate)

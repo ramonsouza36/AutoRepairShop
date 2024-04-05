@@ -14,14 +14,17 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         _dbSet = context.Set<TEntity>();
     }
 
-    public void Add(TEntity entity)
+    public async Task Add(TEntity entity)
     {
         _dbSet.Add(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(TEntity entity)
+    public async Task DeleteAsync(TEntity entity)
     {
         _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
+
     }
 
     public TEntity GetById(int id)

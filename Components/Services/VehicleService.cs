@@ -13,14 +13,14 @@ public partial class VehicleService : IRepository<Vehicle>
         context = ctx;
         repository = new Repository<Vehicle>(context);
     }
-    public void Add(Vehicle vehicle)
+    public async Task Add(Vehicle vehicle)
     {
-        repository.Add(vehicle);
+        await repository.Add(vehicle);
     }
 
-    public void Delete(Vehicle vehicle)
+    public async Task DeleteAsync(Vehicle vehicle)
     {
-        repository.Delete(vehicle);
+        await repository.DeleteAsync(vehicle);
     }
 
     public IEnumerable<Vehicle> Find(Expression<Func<Vehicle, bool>> predicate)

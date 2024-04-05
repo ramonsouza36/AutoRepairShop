@@ -1,3 +1,4 @@
+namespace AutoRepairShop.DAL.Models;
 public partial class Client
 {
     #region  Properties
@@ -10,4 +11,8 @@ public partial class Client
     public string? Phone { get; set; }
 
     #endregion Properties
+    public Client()
+    {
+        Id = Guid.NewGuid();
+    }
 }

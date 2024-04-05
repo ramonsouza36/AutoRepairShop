@@ -1,3 +1,4 @@
+using AutoRepairShop.DAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
