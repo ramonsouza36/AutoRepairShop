@@ -1,0 +1,80 @@
+@page "/veiculosadd"
+@page "/veiculosadd/{id:guid}"
+@using Microsoft.EntityFrameworkCore;
+@using AutoRepairShop.DAL.Models;
+@using AutoRepairShop.Components.Services;
+@inject VehicleService vehicleService
+@inject ClientService clientService
+
+@rendermode InteractiveServer
+
+<PageTitle>Cadastro de Veículos</PageTitle>
+
+<h1>Cadastro de Veículos</h1>
+
+<div>
+    <a class="btn btn-secondary" href="produtos"> 
+        <i class="fas fa-arrow-left fa-lg text-center justify-content-center fs-5 mt-1"> Voltar</i>
+    </a>
+    <button class="btn btn-primary">
+        <i class="fas fa-save fa-lg text-center justify-content-center fs-5 mt-1" @onclick = "(() => AddVehicle())"> Salvar</i>
+    </button>
+</div>
+
+<div class="border border-2 border-dark mt-5">
+  <div class="m-5">
+    <label for="email" class="form-label">Placa:</label>
+    <input type="text" class="form-control" id="nome" placeholder="Nome" name="email" @bind-value="@vehicle.Plate">
+  </div>
+  <div class="m-5">
+    <label for="pwd" class="form-label">Marca:</label>
+    <input type="text" class="form-control" id="nomeFornecedor" placeholder="Nome Fornecedor" name="nomeFornecedor" @bind-value="@vehicle.Brand">
+  </div>
+  <div class="m-5 row col-md-12 d-md-inline-flex">
+    <div class="col-md-4">
+      <label for="pwd" class="form-label">Modelo:</label>
+      <input type="text" class="form-control" id="pwd" placeholder="Quantidade" name="qtd" @bind-value="@vehicle.Model">
+    </div>
+    <div class="col-md-3">
+      <label for="pwd" class="form-label">Ano:</label>
+      <input type="number" class="form-control" id="pwd" placeholder="Valor" name="value" @bind-value="@vehicle.Year">
+    </div>
+    <div class="col-md-3">
+      <label for="pwd" class="form-label">Cor:</label>
+      <input type="text" class="form-control" id="pwd" placeholder="Valor" name="value" @bind-value="@vehicle.Color">
+    </div>
+  </div>
+  <div class="m-5 row col-md-12 d-md-inline-flex">
+    <div class="col-md-12">
+      <select class="form-select" id="inputGroupSelect02">
+        <option selected>Escolher o cliente...</option>
+        @foreach(var client in clients)
+        {
+            <option value="@client.Id">@client.Name</option>
+        } 
+      </select>
+    </div>
+  </div>
+</div>
+
+@code{
+
+  [Parameter]
+  public Guid? id { get; set; }
+
+  public Vehicle? vehicle { get; set; }
+  public List<Client>? clients { get; set; }
+
+  protected override async Task OnParametersSetAsync()
+  {
+        vehicle = new Vehicle();
+        clients = clientService.GetAll().ToList();
+        await Task.CompletedTask;
+  }
+
+  public async Task AddVehicle()
+  {
+    vehicleService.Add(vehicle!);
+    await Task.CompletedTask;
+  }
+}

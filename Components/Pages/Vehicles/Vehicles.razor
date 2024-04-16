@@ -1,0 +1,52 @@
+@page "/veiculos"
+@using AutoRepairShop.Components.Services
+@using AutoRepairShop.DAL.Models
+@inject VehicleService vehicleService
+@rendermode InteractiveServer
+
+<PageTitle>Veículos</PageTitle>
+
+<h1>Veículos</h1>
+
+<a class="btn btn-primary text-center" href="veiculosadd">
+    <i class="fas fa-plus fa-lg justify-content-center fs-5 mt-1"> Adicionar</i>
+</a>
+<div class="mx-auto mt-5">
+    <table class="table table-hover">
+        <tr>
+            <th class="fs-5 text-center">Placa</th>
+            <th class="fs-5 text-center">Marca</th>
+            <th class="fs-5 text-center">Modelo</th>
+            <th class="fs-5 text-center">Opções</th>
+        </tr>
+        @if(vehicles is not null){
+            foreach(var vehicle in vehicles)
+            {   <tr>
+                    <td class="fs-5 text-center">@vehicle.Plate</td>
+                    <td class="fs-5 text-center">@vehicle.Brand</td>
+                    <td class="fs-5 text-center">@vehicle.Model</td>
+                    <td class="fs-5 text-center"> 
+                        <div class="divBotoes">
+                            <a title="Editar" class="btn btn-secondary text-right float-right" role="button" data-bs-toggle="button" >
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a title="Excluir" class="btn btn-danger text-right float-right" role="button" data-bs-toggle="button">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+@code{
+
+    public List<Vehicle>? vehicles { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        vehicles = vehicleService.GetAll().ToList();
+        await Task.CompletedTask;
+    }
+}

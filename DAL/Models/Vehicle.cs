@@ -1,5 +1,9 @@
 public partial class Vehicle
 {
+    public Vehicle()
+    {
+        Id = Guid.NewGuid();
+    }
     #region  Properties
     public Guid Id { get; set; }
 
