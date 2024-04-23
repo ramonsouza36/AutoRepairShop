@@ -11,6 +11,7 @@ public class AutoRepairDataContext : IdentityDbContext
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Client> Clients { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<ServiceOrder> ServiceOrders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
