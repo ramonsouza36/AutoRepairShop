@@ -15,7 +15,8 @@ builder.Services.AddDbContext<AutoRepairDataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<ClientService>();    
 builder.Services.AddScoped<VehicleService>();    
-builder.Services.AddScoped<ProductService>();    
+builder.Services.AddScoped<ProductService>(); 
+builder.Services.AddScoped<ServiceOrderService>();    
 
 var app = builder.Build();
 
