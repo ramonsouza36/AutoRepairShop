@@ -1,0 +1,64 @@
+@page "/servicesorderadd"
+@page "/servicesorderadd/{id:guid}"
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using AutoRepairShop.DAL.Models;
+@using AutoRepairShop.Components.Services;
+@inject ServiceOrderService serviceOrderService
+
+<PageTitle>Cadastro de Ordem de Serviço</PageTitle>
+
+<h1>Cadastro de Ordem de Serviço</h1>
+
+<div class="col-md-12">
+    <a class="btn btn-secondary" href="ordemservico">
+        <i class="fas fa-arrow-left fa-lg text-center justify-content-center fs-5 mt-1"> Voltar</i>
+    </a>
+    <button class="btn btn-primary">
+        <i class="fas fa-save fa-lg text-center justify-content-center fs-5 mt-1" @onclick = "(() => AddServiceOrder())"> Salvar</i>
+    </button>
+    <label class="text-end d-flex fs-5 mt-1">Número: @OrderNumber</label>
+</div>
+
+<div class="border border-2 border-dark mt-5">
+  <div class="m-5">
+    <label for="email" class="form-label">Descrição:</label>
+    <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@serviceOrder.Description">
+  </div>
+  <div class="m-5">
+    <label for="pwd" class="form-label">Produtos Usados:</label>
+    <input type="text" class="form-control" id="documento" placeholder="Documento" name="documento" @bind-value="@serviceOrder.ProductsUsed">
+  </div>
+  <div class="m-5">
+    <label for="pwd" class="form-label">Valor:</label>
+    <input type="number" class="form-control" id="phone" placeholder="Telefone" name="phone" @bind-value="@serviceOrder.Value">
+  </div>
+  <div class="form-check m-5">
+    <input class="form-check-input" type="checkbox" id="flexCheckDefault" @bind-value="@serviceOrder.Authorized">
+    <label class="form-check-label" for="flexCheckDefault">
+      Autorizado
+    </label>
+  </div>
+</div>
+
+@code{
+
+  [Parameter]
+  public Guid? id { get; set; }
+
+  public ServiceOrder? serviceOrder { get; set; }
+
+  public long OrderNumber = 0001;
+
+  protected override async Task OnParametersSetAsync()
+  {
+        serviceOrder = new ServiceOrder();
+        await Task.CompletedTask;
+  }
+
+  public async Task AddServiceOrder()
+  {
+    serviceOrderService.Add(serviceOrder!);
+    await Task.CompletedTask;
+  }
+}

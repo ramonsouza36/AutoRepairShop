@@ -8,36 +8,40 @@
 
 <h1>Ordem Serviço</h1>
 
-<a class="btn btn-primary text-center" href="veiculosadd">
+<a class="btn btn-primary text-center" href="servicesorderadd">
     <i class="fas fa-plus fa-lg justify-content-center fs-5 mt-1"> Adicionar</i>
 </a>
 <div class="mt-5">
     <table class="table table-striped table-hover">
-        <tr>
-            <th class="fs-5 text-center">Número</th>
-            <th class="fs-5 text-center">Valor</th>
-            <th class="fs-5 text-center">Autorizado</th>
-            <th class="fs-5 text-center">Opções</th>
-        </tr>
-        @if(serviceOrders is not null){
-            foreach(var serviceOrder in serviceOrders)
-            {   <tr>
-                    <td class="fs-5 text-center">@serviceOrder.OrderNumber</td>
-                    <td class="fs-5 text-center">@serviceOrder.Value</td>
-                    <td class="fs-5 text-center">@serviceOrder.Authorized</td>
-                    <td class="fs-5 text-center"> 
-                        <div class="divBotoes">
-                            <a title="Editar" class="btn btn-secondary text-right float-right" role="button" data-bs-toggle="button" >
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                            <a title="Excluir" class="btn btn-danger text-right float-right" role="button" data-bs-toggle="button">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+        <thead>
+            <tr>
+                <th class="fs-5 text-center">Número</th>
+                <th class="fs-5 text-center">Valor</th>
+                <th class="fs-5 text-center">Autorizado</th>
+                <th class="fs-5 text-center">Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(serviceOrders is not null){
+                foreach(var serviceOrder in serviceOrders)
+                {   <tr>
+                        <td class="fs-5 text-center">@serviceOrder.OrderNumber</td>
+                        <td class="fs-5 text-center">@serviceOrder.Value</td>
+                        <td class="fs-5 text-center">@serviceOrder.Authorized</td>
+                        <td class="fs-5 text-center"> 
+                            <div class="divBotoes">
+                                <a title="Editar" class="btn btn-secondary text-right float-right" role="button" data-bs-toggle="button" >
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <a title="Excluir" class="btn btn-danger text-right float-right" role="button" data-bs-toggle="button">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
             }
-        }
+        </tbody>
     </table>
 </div>
 @code{

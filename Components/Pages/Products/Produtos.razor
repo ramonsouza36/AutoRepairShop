@@ -13,32 +13,36 @@
 </a>
 <div class="mx-auto mt-5">
     <table class="table table-striped table-hover">
-        <tr>
-            <th class="fs-5 text-center">Nome</th>
-            <th class="fs-5 text-center">Quantidade</th>
-            <th class="fs-5 text-center">Valor</th>
-            <th class="fs-5 text-center">Opções</th>
-        </tr>
-        @if(products is not null){
-            foreach(var product in products)
-            { 
-                <tr>
-                    <td class="fs-5 text-center">@product.Name</td>
-                    <td class="fs-5 text-center">@product.Count</td>
-                    <td class="fs-5 text-center">R$ @product.Value</td>
-                    <td class="fs-5 text-center"> 
-                        <div class="divBotoes">
-                            <a title="Editar" class="btn btn-secondary text-right float-right" role="button" data-bs-toggle="button" >
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                            <a title="Excluir" class="btn btn-danger text-right float-right" role="button" data-bs-toggle="button">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+        <thead>
+            <tr>
+                <th class="fs-5 text-center">Nome</th>
+                <th class="fs-5 text-center">Quantidade</th>
+                <th class="fs-5 text-center">Valor</th>
+                <th class="fs-5 text-center">Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(products is not null){
+                foreach(var product in products)
+                { 
+                    <tr>
+                        <td class="fs-5 text-center">@product.Name</td>
+                        <td class="fs-5 text-center">@product.Count</td>
+                        <td class="fs-5 text-center">R$ @product.Value</td>
+                        <td class="fs-5 text-center"> 
+                            <div class="divBotoes">
+                                <a title="Editar" class="btn btn-secondary text-right float-right" role="button" data-bs-toggle="button" >
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <a title="Excluir" class="btn btn-danger text-right float-right" role="button" data-bs-toggle="button">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
             }
-        }
+        </tbody>
     </table>
 </div>
 
