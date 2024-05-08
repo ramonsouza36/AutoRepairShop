@@ -30,8 +30,8 @@
     <label for="pwd" class="form-label">Marca:</label>
     <input type="text" class="form-control" id="nomeFornecedor" placeholder="Nome Fornecedor" name="nomeFornecedor" @bind-value="@vehicle.Brand">
   </div>
-  <div class="m-5 row col-md-12 d-md-inline-flex">
-    <div class="col-md-4">
+  <div class="row col-md-12 d-md-inline-flex">
+    <div class="ms-5 col-md-4">
       <label for="pwd" class="form-label">Modelo:</label>
       <input type="text" class="form-control" id="pwd" placeholder="Quantidade" name="qtd" @bind-value="@vehicle.Model">
     </div>
@@ -44,8 +44,8 @@
       <input type="text" class="form-control" id="pwd" placeholder="Valor" name="value" @bind-value="@vehicle.Color">
     </div>
   </div>
-  <div class="m-5 row col-md-12 d-md-inline-flex">
-    <div class="col-md-12">
+  <div class="row col-md-12 d-md-inline-flex">
+    <div class="m-5 col-md-10">
       <select class="form-select" id="inputGroupSelect02">
         <option selected>Escolher o cliente...</option>
         @foreach(var client in clients)

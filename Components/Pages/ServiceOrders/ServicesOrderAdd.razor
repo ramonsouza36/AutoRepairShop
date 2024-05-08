@@ -5,6 +5,7 @@
 @using AutoRepairShop.DAL.Models;
 @using AutoRepairShop.Components.Services;
 @inject ServiceOrderService serviceOrderService
+@inject VehicleService vehicleService
 
 <PageTitle>Cadastro de Ordem de Serviço</PageTitle>
 
@@ -30,6 +31,19 @@
     <input type="text" class="form-control" id="documento" placeholder="Documento" name="documento" @bind-value="@serviceOrder.ProductsUsed">
   </div>
   <div class="m-5">
+    <label for="pwd" class="form-label">Veículo:</label>
+    <select class="form-select" id="inputGroupSelect01">
+      <option selected>Selecione o veículo...</option>
+      @if(vehicles is not null)
+      {
+          foreach(var vehicle in vehicles)
+          {
+            <option value=@vehicle.Id>@vehicle.Model - @vehicle.Plate</option>
+          }
+      }
+    </select>
+  </div>
+  <div class="m-5">
     <label for="pwd" class="form-label">Valor:</label>
     <input type="number" class="form-control" id="phone" placeholder="Telefone" name="phone" @bind-value="@serviceOrder.Value">
   </div>
@@ -48,17 +62,21 @@
 
   public ServiceOrder? serviceOrder { get; set; }
 
+  public List<Vehicle>? vehicles { get; set; }
+
   public long OrderNumber = 0001;
 
   protected override async Task OnParametersSetAsync()
   {
         serviceOrder = new ServiceOrder();
+        vehicles = vehicleService.GetAll().ToList();
         await Task.CompletedTask;
   }
 
   public async Task AddServiceOrder()
   {
     serviceOrderService.Add(serviceOrder!);
+        
     await Task.CompletedTask;
   }
 }
