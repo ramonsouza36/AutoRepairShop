@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 public partial class Product
 {
     #region  Properties
@@ -10,6 +12,9 @@ public partial class Product
     public decimal Value { get; set; }
 
     public string? Supplier { get; set; }
+
+    [NotMapped]
+    public bool IsSelected { get; set; } = false;
 
     #endregion Properties
 }

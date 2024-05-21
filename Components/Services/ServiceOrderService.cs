@@ -44,4 +44,9 @@ public partial class ServiceOrderService : IRepository<ServiceOrder>
     {
         repository.Update(serviceOrder);
     }
+
+    public long GetMaxOrderNumber()
+    {
+        return context.ServiceOrders.Max(p => p.OrderNumber);
+    }
 }

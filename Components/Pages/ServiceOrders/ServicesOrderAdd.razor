@@ -6,19 +6,24 @@
 @using AutoRepairShop.Components.Services;
 @inject ServiceOrderService serviceOrderService
 @inject VehicleService vehicleService
+@inject ProductService productService
 
 <PageTitle>Cadastro de Ordem de Serviço</PageTitle>
 
 <h1>Cadastro de Ordem de Serviço</h1>
 
-<div class="col-md-12">
+<div class="row col-md-12 d-md-inline-flex">
+  <div class="col-md-6">
     <a class="btn btn-secondary" href="ordemservico">
         <i class="fas fa-arrow-left fa-lg text-center justify-content-center fs-5 mt-1"> Voltar</i>
     </a>
     <button class="btn btn-primary">
         <i class="fas fa-save fa-lg text-center justify-content-center fs-5 mt-1" @onclick = "(() => AddServiceOrder())"> Salvar</i>
     </button>
-    <label class="text-end d-flex fs-5 mt-1">Número: @OrderNumber</label>
+  </div>
+  <div class="col-md-6 d-flex justify-content-end">
+    <label class="text-end fs-3 mt-1">Número: @OrderNumber</label>
+  </div>
 </div>
 
 <div class="border border-2 border-dark mt-5">
@@ -26,9 +31,20 @@
     <label for="email" class="form-label">Descrição:</label>
     <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@serviceOrder.Description">
   </div>
-  <div class="m-5">
+  <div class="m-5 overflow-auto">
     <label for="pwd" class="form-label">Produtos Usados:</label>
-    <input type="text" class="form-control" id="documento" placeholder="Documento" name="documento" @bind-value="@serviceOrder.ProductsUsed">
+    <ul class="list-group">
+      @if(products is not null)
+      {
+        foreach(var product in products)
+        {
+          <li class="list-group-item">
+            <input class="form-check-input me-1" type="checkbox" @bind-value="@product.IsSelected" >
+            @product.Name
+          </li>  
+        }
+      }
+    </ul>
   </div>
   <div class="m-5">
     <label for="pwd" class="form-label">Veículo:</label>
@@ -42,10 +58,6 @@
           }
       }
     </select>
-  </div>
-  <div class="m-5">
-    <label for="pwd" class="form-label">Valor:</label>
-    <input type="number" class="form-control" id="phone" placeholder="Telefone" name="phone" @bind-value="@serviceOrder.Value">
   </div>
   <div class="form-check m-5">
     <input class="form-check-input" type="checkbox" id="flexCheckDefault" @bind-value="@serviceOrder.Authorized">
@@ -64,17 +76,22 @@
 
   public List<Vehicle>? vehicles { get; set; }
 
-  public long OrderNumber = 0001;
+  public List<Product>? products { get; set; }
+
+  public long OrderNumber = 0;
 
   protected override async Task OnParametersSetAsync()
   {
         serviceOrder = new ServiceOrder();
         vehicles = vehicleService.GetAll().ToList();
+        products = productService.GetAll().ToList();
+        OrderNumber = serviceOrderService.GetMaxOrderNumber() + 1;
         await Task.CompletedTask;
   }
 
   public async Task AddServiceOrder()
   {
+    serviceOrder!.OrderNumber = OrderNumber;
     serviceOrderService.Add(serviceOrder!);
         
     await Task.CompletedTask;
