@@ -16,5 +16,8 @@ public partial class Product
     [NotMapped]
     public bool IsSelected { get; set; } = false;
 
+    [NotMapped]
+    public int QuantityUsed { get; set; }
+
     #endregion Properties
 }

@@ -4,6 +4,7 @@
 @using Microsoft.EntityFrameworkCore;
 @using AutoRepairShop.DAL.Models;
 @using AutoRepairShop.Components.Services;
+@using System.Text.Json
 @inject ServiceOrderService serviceOrderService
 @inject VehicleService vehicleService
 @inject ProductService productService
@@ -22,7 +23,7 @@
     </button>
   </div>
   <div class="col-md-6 d-flex justify-content-end">
-    <label class="text-end fs-3 mt-1">Número: @OrderNumber</label>
+    <label class="text-end fs-3">Número: @OrderNumber</label>
   </div>
 </div>
 
@@ -33,15 +34,24 @@
   </div>
   <div class="m-5 overflow-auto">
     <label for="pwd" class="form-label">Produtos Usados:</label>
-    <ul class="list-group">
+    <ul class="list-group ">
       @if(products is not null)
       {
         foreach(var product in products)
         {
           <li class="list-group-item">
-            <input class="form-check-input me-1" type="checkbox" @bind-value="@product.IsSelected" >
-            @product.Name
-          </li>  
+            <div class="row col-md-12 d-md-inline-flex">
+              <div class="col-md-6">
+                <input class="form-check-input me-3 align-middle" type="checkbox" @bind-value="@product.IsSelected">
+                  <label class="align-middle mt-1">
+                    @product.Name
+                  </label>
+               </div>
+              <div class="col-md-6">
+                <input class="form-control me-1 align-middle" type="number" @bind-value="@product.QuantityUsed">
+              </div>
+            </div>
+          </li> 
         }
       }
     </ul>
@@ -92,7 +102,18 @@
   public async Task AddServiceOrder()
   {
     serviceOrder!.OrderNumber = OrderNumber;
-    serviceOrderService.Add(serviceOrder!);
+    List<Guid> usedProductsId = new List<Guid>();
+    var usedProducts = products!.FindAll(p => p.IsSelected);
+    Dictionary<Guid, int> usedItens = new();
+    foreach(var usedProduct in usedProducts)
+      usedItens.Add(usedProduct.Id, usedProduct.QuantityUsed);
+
+    var options = new JsonSerializerOptions { WriteIndented = true };
+    string jsonString = JsonSerializer.Serialize(usedItens,options);
+    serviceOrder!.ProductsUsed = jsonString;
+
+    var teste = JsonSerializer.Deserialize<Dictionary<Guid, int>>(jsonString);
+    await serviceOrderService!.Add(serviceOrder!);
         
     await Task.CompletedTask;
   }
