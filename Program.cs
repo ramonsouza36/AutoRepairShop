@@ -16,7 +16,8 @@ builder.Services.AddDbContext<AutoRepairDataContext>(options =>
 builder.Services.AddScoped<ClientService>();    
 builder.Services.AddScoped<VehicleService>();    
 builder.Services.AddScoped<ProductService>(); 
-builder.Services.AddScoped<ServiceOrderService>();    
+builder.Services.AddScoped<ServiceOrderService>();  
+builder.Services.AddServerSideBlazor().AddCircuitOptions(options => {  options.DetailedErrors = true; });  
 
 var app = builder.Build();
 
