@@ -37,7 +37,7 @@ public partial class ClientService : IRepository<Client>
        return clients;
     }
 
-    public Client GetById(int id)
+    public Client GetById(Guid id)
     {
         var client = repository.GetById(id);
         return client;

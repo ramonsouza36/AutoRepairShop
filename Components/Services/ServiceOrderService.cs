@@ -34,7 +34,7 @@ public partial class ServiceOrderService : IRepository<ServiceOrder>
        return serviceOrders;
     }
 
-    public ServiceOrder GetById(int id)
+    public ServiceOrder GetById(Guid id)
     {
         var serviceOrder = repository.GetById(id);
         return serviceOrder;

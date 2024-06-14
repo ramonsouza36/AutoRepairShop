@@ -1,7 +1,10 @@
 @page "/ordemservico"
+@using AutoRepairShop.Components.Pages.Modals
 @using AutoRepairShop.Components.Services
 @using AutoRepairShop.DAL.Models
+@using System.Text.Json
 @inject ServiceOrderService serviceOrderService
+@inject ProductService productService
 @rendermode InteractiveServer
 
 <PageTitle>Ordem Serviço</PageTitle>
@@ -36,6 +39,9 @@
                                 <a title="Excluir" class="btn btn-danger text-right float-right" role="button" data-bs-toggle="button">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @onclick = "(() => OpenModal(serviceOrder.Id))">
+                                    M
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -44,13 +50,33 @@
         </tbody>
     </table>
 </div>
+
+<Modal @ref="Modal"></Modal>
+
 @code{
 
     public List<ServiceOrder>? serviceOrders { get; set; }
+
+    private Modal? Modal { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
         serviceOrders = serviceOrderService.GetAll().ToList();
         await Task.CompletedTask;
+    }
+
+    public  void OpenModal(Guid id)
+    {
+        var serviceOrder = serviceOrderService.GetById(id);
+        var prodQuant = JsonSerializer.Deserialize<Dictionary<Guid, int>>(serviceOrder!.ProductsUsed);
+        Dictionary<string, int> products = new ();
+        foreach( KeyValuePair<Guid, int> kvp in prodQuant! )
+        {
+            var name = productService.GetById(kvp.Key).Name;
+            var qtd = kvp.Value;
+            products.Add(name!, qtd);
+        }
+        Modal!.Open();
+        //Task.CompletedTask;
     }
 }

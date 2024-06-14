@@ -34,7 +34,7 @@ public partial class VehicleService : IRepository<Vehicle>
        return vehicles;
     }
 
-    public Vehicle GetById(int id)
+    public Vehicle GetById(Guid id)
     {
         var vehicle = repository.GetById(id);
         return vehicle;

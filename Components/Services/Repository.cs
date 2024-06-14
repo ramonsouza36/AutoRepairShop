@@ -27,7 +27,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     }
 
-    public TEntity GetById(int id)
+    public TEntity GetById(Guid id)
     {
         return _dbSet.Find(id);
     }

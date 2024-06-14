@@ -34,7 +34,7 @@ public partial class ProductService : IRepository<Product>
        return products; 
     }
 
-    public Product GetById(int id)
+    public Product GetById(Guid id)
     {
         var product = repository.GetById(id);
         return product;

@@ -1,7 +1,6 @@
 @page "/servicesorderadd"
 @page "/servicesorderadd/{id:guid}"
 @using System.Linq;
-@using AutoRepairShop.Components.Pages.Modals
 @using Microsoft.EntityFrameworkCore;
 @using AutoRepairShop.DAL.Models;
 @using AutoRepairShop.Components.Services;
@@ -21,10 +20,6 @@
     </a>
     <button class="btn btn-primary">
         <i class="fas fa-save fa-lg text-center justify-content-center fs-5 mt-1" @onclick = "(() => AddServiceOrder())"> Salvar</i>
-    </button>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @onclick = "(() => Modal.Open())">
-      Launch demo modal
     </button>
   </div>
   <div class="col-md-6 d-flex justify-content-end">
@@ -82,10 +77,6 @@
   </div>
 </div>
 
-<Modal @ref="Modal"></Modal>
-
-
-
 @code{
 
   [Parameter]
@@ -98,8 +89,6 @@
   public List<Product>? products { get; set; }
 
   public long OrderNumber = 0;
-
-  private Modal? Modal { get; set; }
 
   protected override async Task OnParametersSetAsync()
   {
@@ -123,7 +112,6 @@
     string jsonString = JsonSerializer.Serialize(usedItens,options);
     serviceOrder!.ProductsUsed = jsonString;
 
-    var teste = JsonSerializer.Deserialize<Dictionary<Guid, int>>(jsonString);
     await serviceOrderService!.Add(serviceOrder!);
         
     await Task.CompletedTask;
