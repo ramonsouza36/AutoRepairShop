@@ -102,14 +102,19 @@
   public async Task AddServiceOrder()
   {
     serviceOrder!.OrderNumber = OrderNumber;
-    List<Guid> usedProductsId = new List<Guid>();
     var usedProducts = products!.FindAll(p => p.IsSelected);
-    Dictionary<Guid, int> usedItens = new();
+    List<ProductsUsed> usedItens = new();
     foreach(var usedProduct in usedProducts)
-      usedItens.Add(usedProduct.Id, usedProduct.QuantityUsed);
+    {
+      var prod = new ProductsUsed();
+      prod.ProductName = usedProduct.Name;
+      prod.QuantityUsed = usedProduct.QuantityUsed;
+      prod.TotalValue = usedProduct.Value * usedProduct.QuantityUsed;
+      usedItens.Add(prod);
+    }
 
     var options = new JsonSerializerOptions { WriteIndented = true };
-    string jsonString = JsonSerializer.Serialize(usedItens,options);
+    string jsonString = JsonSerializer.Serialize<List<ProductsUsed>>(usedItens,options);
     serviceOrder!.ProductsUsed = jsonString;
 
     await serviceOrderService!.Add(serviceOrder!);

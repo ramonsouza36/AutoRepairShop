@@ -7,7 +7,18 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        <div class="row col-md-12 d-md-inline-flex">
+            @if(Products is not null)
+            {
+              foreach(var product in Products)
+              {
+                
+                <label class="align-middle me-1 col-md-6">@product.ProductName</label>
+                <label class="align-middle me-1 col-md-3">@product.QuantityUsed</label>
+                <label class="align-middle me-1 col-md-2">R$@product.TotalValue</label>
+              }
+            }
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" @onclick = "(() => Close())" data-bs-dismiss="modal">Close</button>
@@ -23,6 +34,9 @@
     public string ModalDisplay = "none;";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
+
+    [Parameter]
+    public List<ProductsUsed>? Products { get; set; }
     public void Open()
     {
         ModalDisplay = "block;";

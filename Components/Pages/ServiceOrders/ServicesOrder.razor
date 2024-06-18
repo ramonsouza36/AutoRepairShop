@@ -68,14 +68,9 @@
     public  void OpenModal(Guid id)
     {
         var serviceOrder = serviceOrderService.GetById(id);
-        var prodQuant = JsonSerializer.Deserialize<Dictionary<Guid, int>>(serviceOrder!.ProductsUsed);
-        Dictionary<string, int> products = new ();
-        foreach( KeyValuePair<Guid, int> kvp in prodQuant! )
-        {
-            var name = productService.GetById(kvp.Key).Name;
-            var qtd = kvp.Value;
-            products.Add(name!, qtd);
-        }
+        var prodQuant = JsonSerializer.Deserialize<List<ProductsUsed>>(serviceOrder!.ProductsUsed);
+        Modal!.Products = new List<ProductsUsed>();
+        Modal!.Products.AddRange(prodQuant);
         Modal!.Open();
         //Task.CompletedTask;
     }
