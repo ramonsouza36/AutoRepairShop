@@ -11,6 +11,9 @@
 <a class="btn btn-primary text-center" href="veiculosadd">
     <i class="fas fa-plus fa-lg justify-content-center fs-5 mt-1"> Adicionar</i>
 </a>
+<button @onclick="(() => Filter())">
+    filtro
+</button>
 <div class="mx-auto mt-5">
     <table class="table table-hover">
         <thead>
@@ -48,9 +51,28 @@
 
     public List<Vehicle>? vehicles { get; set; }
 
+    public VehicleFilter? filter { get; set; }
+
     protected override async Task OnParametersSetAsync()
     {
         vehicles = vehicleService.GetAll().ToList();
         await Task.CompletedTask;
+        filter = new VehicleFilter();
+    }
+
+    public void Filter()
+    {
+        if(filter.Brand is not null)
+          vehicles = vehicles.Where(v => v.Brand.StartsWith(filter.Brand)).ToList();
+
+        else if(filter.Model is not null)
+          vehicles = vehicles.Where(v => v.Model.StartsWith(filter.Model)).ToList();
+
+        else if(filter.Year is not null)
+          vehicles = vehicles.Where(v => v.Year == filter.Year).ToList();
+
+        else
+            vehicles = vehicleService.GetAll().ToList();
+
     }
 }
