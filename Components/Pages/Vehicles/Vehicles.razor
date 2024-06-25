@@ -11,9 +11,27 @@
 <a class="btn btn-primary text-center" href="veiculosadd">
     <i class="fas fa-plus fa-lg justify-content-center fs-5 mt-1"> Adicionar</i>
 </a>
-<button @onclick="(() => Filter())">
-    filtro
-</button>
+<div>
+    <div class="row col-md-12 d-md-inline-flex mt-5">
+        <div class="col-md-4">
+            <label for="email" class="form-label">Marca:</label>
+            <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@filter.Brand">
+        </div>
+        <div class="col-md-4">
+            <label for="email" class="form-label">Modelo:</label>
+            <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@filter.Model">
+        </div>
+        <div class="col-md-4">
+            <label for="email" class="form-label">Ano:</label>
+            <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@filter.Year">
+        </div>
+    </div>
+    <div class="mt-2">
+        <button class="btn btn-primary" @onclick="(() => Filter())">
+            <i class="fas fa-search fa-lg justify-content-center mt-1">  Filtro</i>
+        </button>
+    </div>
+</div>
 <div class="mx-auto mt-5">
     <table class="table table-hover">
         <thead>
@@ -25,8 +43,8 @@
             </tr>
         </thead>
         <tbody>
-            @if(vehicles is not null){
-                foreach(var vehicle in vehicles)
+            @if(filterVehicles is not null){
+                foreach(var vehicle in filterVehicles)
                 {   <tr>
                         <td class="fs-5 text-center">@vehicle.Plate</td>
                         <td class="fs-5 text-center">@vehicle.Brand</td>
@@ -51,28 +69,31 @@
 
     public List<Vehicle>? vehicles { get; set; }
 
+    public List<Vehicle>? filterVehicles { get; set; }
+
     public VehicleFilter? filter { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
         vehicles = vehicleService.GetAll().ToList();
+        filterVehicles = vehicles;
         await Task.CompletedTask;
         filter = new VehicleFilter();
     }
 
     public void Filter()
     {
-        if(filter.Brand is not null)
-          vehicles = vehicles.Where(v => v.Brand.StartsWith(filter.Brand)).ToList();
+        if(!string.IsNullOrEmpty(filter.Brand))
+          filterVehicles = vehicles.Where(v => v.Brand.ToUpper().StartsWith(filter.Brand.ToUpper())).ToList();
 
-        else if(filter.Model is not null)
-          vehicles = vehicles.Where(v => v.Model.StartsWith(filter.Model)).ToList();
+        else if(!string.IsNullOrEmpty(filter.Model))
+          filterVehicles = vehicles.Where(v => v.Model.ToUpper().StartsWith(filter.Model.ToUpper())).ToList();
 
         else if(filter.Year is not null)
-          vehicles = vehicles.Where(v => v.Year == filter.Year).ToList();
+          filterVehicles = vehicles.Where(v => v.Year == filter.Year).ToList();
 
         else
-            vehicles = vehicleService.GetAll().ToList();
+            filterVehicles = vehicleService.GetAll().ToList();
 
     }
 }
