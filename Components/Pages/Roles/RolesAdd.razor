@@ -1,0 +1,50 @@
+@page "/permissaoadd"
+@page "/permissaoadd/{id:guid}"
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.AspNetCore.Identity;
+@using System;
+@using System.Text;
+@using System.Security.Cryptography;
+@using AutoRepairShop.Components.Services;
+@inject NavigationManager navManager;
+@inject RoleService roleService;
+
+<PageTitle>Roles</PageTitle>
+
+<div class="container-fluid">
+    <h3>Permissão</h3>
+</div>
+<div>
+    <a class="btn btn-secondary" href="permissoes"> 
+        <i class="fas fa-arrow-left fa-lg text-center justify-content-center fs-5 mt-1"> Voltar</i>
+    </a>
+    <button class="btn btn-primary active text-center">
+        <i class="fas fa-save fa-lg text-center justify-content-center fs-5 mt-1" @onclick = "(() => SetRole())"> Salvar</i>
+    </button>
+</div>
+<div class="container-fluid">
+    <div class="row col-md-12 d-md-inline-flex mt-5">
+        <div class="col-md-3">
+            <label class="label">Nome da Permissão</label>
+            <input class="form-control border-secondary col-md-3" type="text" placeholder="Nome Permissão" @bind-value="@role.Name"/>
+        </div>
+    </div>
+</div>
+@code{
+
+  [Parameter]
+  public Guid? id { get; set; }
+  public IdentityRole? role { get; set; }
+
+  protected override async Task OnParametersSetAsync()
+  {
+        role = new IdentityRole();
+        await Task.CompletedTask;
+  }
+
+  private async Task SetRole()
+  {
+    roleService.Add(role);
+  }
+}

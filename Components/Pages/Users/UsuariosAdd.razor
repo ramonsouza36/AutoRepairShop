@@ -1,0 +1,126 @@
+@page "/usuariosadd"
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.AspNetCore.Identity;
+@using System;
+@using System.Text;
+@using System.Security.Cryptography;
+@using AutoRepairShop.Components.Services;
+@inject NavigationManager navManager;
+@inject UserService  userService;
+@inject RoleService  roleService;
+
+<PageTitle>Users</PageTitle>
+
+<div class="container-fluid">
+    <h3>Usuários</h3>
+</div>
+<div>
+    <a class="btn btn-secondary" href="usuarios"> 
+        <i class="fas fa-arrow-left fa-lg text-center justify-content-center fs-5 mt-1"> Voltar</i>
+    </a>
+    <button class="btn btn-primary active text-center">
+        <i class="fas fa-save fa-lg text-center justify-content-center fs-5 mt-1" @onclick = "(() => SetUser())"> Salvar</i>
+    </button>
+</div>
+<div class="container-fluid">
+    <div class="row col-md-12 d-md-inline-flex mt-5">
+        <div class="col-md-3">
+            <label class="label">Nome do usuário</label>
+            <input class="form-control border-secondary col-md-3" type="text" placeholder="Nome usuário" @bind-value="@user.UserName"/>
+        </div>
+        <div class="col-md-3">
+            <label class="label">Senha</label>
+            <div class="input-group align-items-center">
+                <input type="@Type" class="form-control border-secondary col-md-3" @bind-value = "@Password" placeholder="Senha"/>
+                <button class="btn btn-secondary text-white" @onclick="(() => changeType())"><i class="@Class"></i></button>
+            </div>        
+        </div>
+        <div class="col-md-3">
+            <label class="label">Confirmar senha</label>
+            <div class="input-group align-items-center">
+                <input class="form-control border-secondary col-md-3" type="@TypeConfirmation" placeholder="Confirmar senha" @bind-value="@PasswordConfirmation"/>
+                <button class="btn btn-secondary text-white" @onclick="(() => changeTypeConfirmation())"><i class="@Class"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12 d-md-inline-flex mt-5">
+        <div class="col-md-4">
+            <label class="label">Tipo de usuário</label>
+            <select class="form-select border-secondary col-md-4 me-2" type="text" placeholder="Nome Curso">
+                <option value=@Guid.Empty>Selecione o tipo....</option>
+                @if(roles != null)
+                {
+                    foreach(var item in roles!)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="label">Email</label>
+            <input class="form-control border-secondary col-md-3" type="text" placeholder="Email" @bind-value="@user.Email"/>
+        </div>
+    </div>
+</div>
+
+ @code{
+    
+    public string Password = "";
+    public string PasswordConfirmation = "";
+    public string Type = "password";
+    public string TypeConfirmation = "password";
+    public string Class = "fas fa-eye";
+    public string ClassConfirmation = "fas fa-eye";
+    public string ClassToast { get; set; } = "toast hide";
+    public string Message = string.Empty;
+    public string Status = string.Empty;
+    [Parameter]
+    public Guid? id { get; set; }
+
+    public Guid typeId = Guid.Empty;
+
+    public List<IdentityRole>? roles;
+
+    public IdentityUser? user { get; set; }
+
+  protected override async Task OnParametersSetAsync()
+  {
+        user = new IdentityUser();
+        roles = roleService.GetAll().ToList();
+        await Task.CompletedTask;
+  }
+
+  private void changeType()
+  {
+    if(Type == "password")
+    {
+        Type = "text";
+        Class = "fas fa-eye-slash";
+    }
+    else
+    {
+        Type = "password";
+        Class = "fas fa-eye";
+    }
+  }
+
+  private void changeTypeConfirmation()
+  {
+    if(TypeConfirmation == "password")
+    {
+        TypeConfirmation = "text";
+        ClassConfirmation = "fas fa-eye-slash";
+    }
+    else
+    {
+        TypeConfirmation = "password";
+        ClassConfirmation = "fas fa-eye";
+    }
+  }
+  private async Task SetUser()
+  {
+    userService.Add(user, Password);
+  }
+}

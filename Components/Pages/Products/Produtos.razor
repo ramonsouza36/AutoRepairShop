@@ -6,9 +6,9 @@
 
 <PageTitle>Produtos</PageTitle>
 
-<h1>Produtos</h1>
+<h3>Produtos</h3>
 
-<a class="btn btn-primary text-center" href="produtosadd">
+<a class="btn btn-primary active mb-3 text-center" href="produtosadd">
     <i class="fas fa-plus fa-lg justify-content-center fs-5 mt-1"> Adicionar</i>
 </a>
 <div>
@@ -35,7 +35,7 @@
                 <th class="fs-5 text-center">Nome</th>
                 <th class="fs-5 text-center">Quantidade</th>
                 <th class="fs-5 text-center">Valor</th>
-                <th class="fs-5 text-center">Opções</th>
+                <th class="fs-5 d-flex justify-content-end">Opções</th>
             </tr>
         </thead>
         <tbody>
@@ -47,8 +47,8 @@
                         <td class="fs-5 text-center">@product.Count</td>
                         <td class="fs-5 text-center">R$ @product.Value</td>
                         <td class="fs-5 text-center"> 
-                            <div class="divBotoes">
-                                <a title="Editar" class="btn btn-secondary text-right float-right" role="button" data-bs-toggle="button" >
+                            <div class="divBotoes d-flex justify-content-end">
+                                <a title="Editar" class="btn btn-secondary text-right me-2" role="button" data-bs-toggle="button" >
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
                                 <a title="Excluir" class="btn btn-danger text-right float-right" role="button" data-bs-toggle="button">

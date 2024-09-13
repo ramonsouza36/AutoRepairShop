@@ -6,9 +6,9 @@
 
 <PageTitle>Veículos</PageTitle>
 
-<h1>Veículos</h1>
+<h3>Veículos</h3>
 
-<a class="btn btn-primary text-center" href="veiculosadd">
+<a class="btn btn-primary active mb-3 text-center" href="veiculosadd">
     <i class="fas fa-plus fa-lg justify-content-center fs-5 mt-1"> Adicionar</i>
 </a>
 <div>
@@ -39,7 +39,7 @@
                 <th class="fs-5 text-center">Placa</th>
                 <th class="fs-5 text-center">Marca</th>
                 <th class="fs-5 text-center">Modelo</th>
-                <th class="fs-5 text-center">Opções</th>
+                <th class="fs-5 d-flex justify-content-end">Opções</th>
             </tr>
         </thead>
         <tbody>
@@ -50,8 +50,8 @@
                         <td class="fs-5 text-center">@vehicle.Brand</td>
                         <td class="fs-5 text-center">@vehicle.Model</td>
                         <td class="fs-5 text-center"> 
-                            <div class="divBotoes">
-                                <a title="Editar" class="btn btn-secondary text-right float-right" role="button" data-bs-toggle="button" >
+                            <div class="divBotoes d-flex justify-content-end">
+                                <a title="Editar" class="btn btn-secondary text-right float-right me-2" role="button" data-bs-toggle="button" >
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
                                 <a title="Excluir" class="btn btn-danger text-right float-right" role="button" data-bs-toggle="button">

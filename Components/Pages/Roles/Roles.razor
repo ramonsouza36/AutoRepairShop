@@ -1,0 +1,74 @@
+@page "/permissoes"
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.AspNetCore.Identity;
+@using AutoRepairShop.Components.Services;
+@inject NavigationManager navManager;
+@inject RoleService roleService;
+
+<div class="container-fluid ps-0">
+    <h3>Permissões</h3>
+</div>
+<div>
+    <a href="permissaoadd" class="btn btn-primary active mb-3 text-center" role="button" data-bs-toggle="button" aria-pressed="true">
+        <i class="fas fa-plus"> Adicionar</i>
+    </a>
+</div>
+<div class="container-fluid">
+    <div class="row col-md-12 d-md-inline-flex">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>
+                        <div class="divBotoes d-flex justify-content-end">
+                            Opções
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (roles is not null)
+                {
+                    foreach(var item in roles)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                <div class="divBotoes d-flex justify-content-end">
+                                    <a title="Editar" class="btn btn-secondary text-center me-2" role="button" data-bs-toggle="button">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <a title="Excluir" class="btn btn-danger text-center" role="button" data-bs-toggle="button">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@code {
+    List<IdentityRole>? roles { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        roles = roleService.GetAll().ToList();
+    }
+
+    public void showRole(string roleId)
+    {
+        var id = Guid.ParseExact(roleId,"D");
+        navManager.NavigateTo($"permissaoadd/{id}");
+    }
+
+    public async Task deleteStudent(Guid roleId)
+    {
+        var role = roleService.GetById(roleId);
+        await roleService.DeleteAsync(role);
+        navManager.NavigateTo($"permissoes", true);
+    } 
+}

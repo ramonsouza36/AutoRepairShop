@@ -1,5 +1,6 @@
 using AutoRepairShop.Components;
 using AutoRepairShop.Components.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,17 +9,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<AutoRepairDataContext>()
     .AddDefaultTokenProviders();
+
 builder.Services.AddDbContext<AutoRepairDataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 builder.Services.AddScoped<ClientService>();    
 builder.Services.AddScoped<VehicleService>();    
 builder.Services.AddScoped<ProductService>(); 
 builder.Services.AddScoped<ServiceOrderService>();  
+builder.Services.AddScoped<UserService>();  
+builder.Services.AddScoped<RoleService>();  
+builder.Services.AddScoped<LoginService>(); 
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => {  options.DetailedErrors = true; });  
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,7 +40,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
