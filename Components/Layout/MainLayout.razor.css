@@ -78,6 +78,11 @@ main {
 
 .loginDiv {
     margin-top: 40vh !important;
+    box-shadow: grey;
+}
+
+.logincard {
+    background-color: whitesmoke;
 }
 
 #blazor-error-ui {

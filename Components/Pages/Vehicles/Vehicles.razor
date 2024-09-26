@@ -83,14 +83,14 @@
 
     public void Filter()
     {
-        if(!string.IsNullOrEmpty(filter.Brand))
-          filterVehicles = vehicles.Where(v => v.Brand.ToUpper().StartsWith(filter.Brand.ToUpper())).ToList();
+        if(!string.IsNullOrEmpty(filter!.Brand))
+          filterVehicles = vehicles!.Where(v => v.Brand!.ToUpper().StartsWith(filter.Brand.ToUpper())).ToList();
 
         else if(!string.IsNullOrEmpty(filter.Model))
-          filterVehicles = vehicles.Where(v => v.Model.ToUpper().StartsWith(filter.Model.ToUpper())).ToList();
+          filterVehicles = vehicles!.Where(v => v.Model!.ToUpper().StartsWith(filter.Model.ToUpper())).ToList();
 
         else if(filter.Year is not null)
-          filterVehicles = vehicles.Where(v => v.Year == filter.Year).ToList();
+          filterVehicles = vehicles!.Where(v => v.Year == filter.Year).ToList();
 
         else
             filterVehicles = vehicleService.GetAll().ToList();

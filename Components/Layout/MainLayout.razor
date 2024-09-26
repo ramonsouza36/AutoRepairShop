@@ -1,15 +1,18 @@
 ﻿@inherits LayoutComponentBase
 @using AutoRepairShop.Components.Layout
+@using AutoRepairShop.Components.Pages
+@using Microsoft.AspNetCore.Identity
 @inject NavigationManager navManager;
+@inject UserManager<IdentityUser> userManager;
 <div class="page">
         <AuthorizeView>
             <Authorized>
                 <div class="sidebar">
-                    <NavMenu />
+                    <NavMenu/>
                 </div>
                 <main>
                     <div class="top-row px-4">
-                        <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+                        Hello, @context?.User?.Identity?.Name
                     </div>
                     <article class="content px-4">
                         @Body
@@ -19,7 +22,7 @@
             <NotAuthorized>
                 <div class="row col-md-12 d-flex justify-content-center">
                     <div class="col-md-4 loginDiv">
-                            <AutoRepairShop.Components.Pages.Login/>
+                        <Login/>
                     </div>
                 </div>
             </NotAuthorized>
@@ -35,12 +38,15 @@
 
 @code{
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
+        //navManager.NavigateTo("/login", forceLoad: true);
         await Task.CompletedTask;
     }
-    public void Login()
+
+    @* protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        navManager.NavigateTo($"Login", true);           
-    }
+        navManager.NavigateTo("/login", forceLoad: true);
+        return base.OnAfterRenderAsync(firstRender);
+    } *@
 }

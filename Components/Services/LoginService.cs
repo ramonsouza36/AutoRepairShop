@@ -28,7 +28,7 @@ public partial class LoginService
     {
         var identity = new ClaimsIdentity("password");
         var roles = await userManager.GetRolesAsync(user!);
-        identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+        identity.AddClaim(new Claim(ClaimTypes.Name, user!.UserName!));
         if(roles.Count() > 0)
         {
             foreach(var role in roles)
@@ -36,7 +36,7 @@ public partial class LoginService
         }
         var principal = new ClaimsPrincipal(identity);
         var authProperties = new AuthenticationProperties();
-        var res = await signInManager.PasswordSignInAsync(user.UserName, password,false,false);
+        var res = await signInManager.PasswordSignInAsync(user!.UserName!, password,false,false);
         return true;
     }
 }

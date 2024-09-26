@@ -1,34 +1,110 @@
-@page "/login"
+@page "/Login"
 @using AutoRepairShop.Components.Services;
-@using AutoRepairShop.Components.Pages
+@using AutoRepairShop.Components.Pages;
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
 @using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims
+@using System.ComponentModel.DataAnnotations
 @inject LoginService  loginService;
 @inject NavigationManager navManager;
 @inject SignInManager<IdentityUser> signInManager;
-@rendermode InteractiveServer
+@inject UserManager<IdentityUser> userManager;
+@inject UserService userService;
+@inject IHttpContextAccessor httpContextAccessor
+@attribute [AllowAnonymous]
 
 <div class="card bg-info">
         <h4 class="loginTitle">Login</h4>
         <div class="card-body mt-0">
-            <input class="form-control mb-1" placeholder="Usuário" @bind-value="@username"/>
-            <input class="form-control" placeholder="Senha" type="password" @bind-value="@password"/>
+            <EditForm Model="Input" FormName="loginUser" OnValidSubmit="ValidateLogin">
+                <div>
+                    <div>
+                        <div class="form-floating mb-4 ">
+                            <InputText @bind-Value="Input.Username" type="text" class="form-control" id="floatingInputFilled" placeholder="username ..." />
+                            <label for="floatingInputFilled">Username</label>
+                            <span class="form-floating-focused"></span>
+                            <ValidationMessage For="@(() => Input.Username)" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-floating mb-4 ">
+                            <InputText @bind-Value="Input.Password" type="text" class="form-control" id="floatingInputFilled" placeholder="password ..." />
+                            <label for="floatingInputFilled">Password</label>
+                            <span class="form-floating-focused"></span>
+                            <ValidationMessage For="@(() => Input.Password)" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Sign In</button>
+                    </div>
+                </div>
+            </EditForm>
         </div>
-        <div class="loginButton">
-            <button class="btn btn-primary" type="submit" @onclick = "(() => ValidateLogin())">Entrar</button>
-        </div>
+        
 </div>
 @code {
 
-    public string? username { get; set; }
-    public string? password { get; set; }
+    private string? errorMessage;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.CompletedTask;
+        if (HttpContext is not null)
+        {
+            if (HttpMethods.IsGet(HttpContext.Request.Method))
+            {
+                // Clear the existing external cookie to ensure a clean login process
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            }
+        }
     }
 
-    public async  void ValidateLogin()
+    @* public async Task ValidateLogin()
     {
-        var canLogin = await signInManager.PasswordSignInAsync(username,password,false,false);    
+        var identity = new ClaimsIdentity("password");
+        var users = userService.GetAll();
+        var user = users.FirstOrDefault(u => u.UserName == username);
+        var roles = await userManager.GetRolesAsync(user);
+        identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+        if(roles.Count() > 0)
+        {
+            foreach(var role in roles)
+                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+        }
+        var principal = new ClaimsPrincipal(identity);
+        var authProperties = new AuthenticationProperties();
+        await httpContextAccessor!.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal,authProperties);
+        //return Redirect("/");
+    } *@
+    public async Task ValidateLogin()
+    {
+        var canLogin = await signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);  
+        if(canLogin.Succeeded)
+        {
+            navManager.NavigateTo("/");
+        } 
     }
-}
+
+    private sealed class InputModel
+    {
+        [Required]
+        public string Username { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+    }
+} 

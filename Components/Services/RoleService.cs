@@ -11,24 +11,24 @@ public partial class RoleService : IRepository<IdentityRole>
 
     private readonly Repository<IdentityRole> repository;
 
-    private readonly RoleManager<IdentityRole> roleManager;
+    private readonly RoleManager<IdentityRole>? roleManager;
 
-    public RoleService(AutoRepairDataContext ctx,RoleManager<IdentityRole> roleManager)
+    public RoleService(AutoRepairDataContext ctx,RoleManager<IdentityRole> _roleManager)
     {
         context = ctx;
         repository = new Repository<IdentityRole>(context);
-        roleManager = roleManager;
+        roleManager = _roleManager;
     }
    
     public async Task Add(IdentityRole role)
     {
-        role.NormalizedName = role.Name.ToUpper();
+        role.NormalizedName = role!.Name!.ToUpper();
         await repository.Add(role);
     }
 
     public async Task DeleteAsync(IdentityRole role)
     {
-        await roleManager.DeleteAsync(role);
+        await roleManager!.DeleteAsync(role);
     }
 
     public IEnumerable<IdentityRole> Find(Expression<Func<IdentityRole, bool>> predicate)
