@@ -13,9 +13,8 @@
 @inject UserService userService;
 @inject IHttpContextAccessor httpContextAccessor
 @attribute [AllowAnonymous]
-
-<div class="card bg-info">
-        <h4 class="loginTitle">Login</h4>
+<div class="col-md-12">
+        <h4 class="text-white d-flex justify-content-center">Login</h4>
         <div class="card-body mt-0">
             <EditForm Model="Input" FormName="loginUser" OnValidSubmit="ValidateLogin">
                 <div>
@@ -36,7 +35,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light">Sign In</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light col-md-12">Sign In</button>
                     </div>
                 </div>
             </EditForm>

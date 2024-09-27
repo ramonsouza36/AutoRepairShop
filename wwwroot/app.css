@@ -49,3 +49,10 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.loginDiv {
+    background-color: #5448F5;
+    height: 50vh;
+    align-items: center;
+    vertical-align: middle;
+}
