@@ -2,10 +2,13 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    background: rgb(0,16,36) !important;
+    background: linear-gradient(90deg, rgba(0,16,36,1) 1%, rgba(74,74,221,1) 46%, rgba(0,127,255,1) 71%)  !important;
 }
 
 main {
     flex: 1;
+    background-color: white !important;
 }
 
 .sidebar {
@@ -79,13 +82,47 @@ main {
 .loginDiv {
     margin-top: 20vh !important;
     box-shadow: grey;
-    background-color: #5448F5 !important;
+    background: #7b8895 !important;
     height: 50vh;
     align-items: center;
+    border-color: white;
+    border: 5px;
+    border-radius: 5rem;
+    
 }
 
 .logincard {
     background-color: whitesmoke;
+}
+
+#body { 
+    background: rgb(0,16,36) !important;
+    background: linear-gradient(90deg, rgba(0,16,36,1) 1%, rgba(74,74,221,1) 46%, rgba(0,127,255,1) 71%) !important; 
+}
+
+.inputLogin {
+    border-bottom: bottom;
+    border-bottom-style: bold !important;
+    border-bottom-color: black;
+    outline: 0 !important;
+    background-color: whitesmoke !important;
+    color: black;
+}
+
+.loginLabel {
+    font-family: "Sixtyfour Convergence", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "BLED" 0,
+      "SCAN" 0,
+      "XELA" 0,
+      "YELA" 0;
+}
+
+.homeCard {
+    height: 15vh !important;
 }
 
 #blazor-error-ui {

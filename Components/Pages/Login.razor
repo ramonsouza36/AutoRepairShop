@@ -14,13 +14,13 @@
 @inject IHttpContextAccessor httpContextAccessor
 @attribute [AllowAnonymous]
 <div class="col-md-12">
-        <h4 class="text-white d-flex justify-content-center">Login</h4>
+        <h4 class="text-white d-flex justify-content-center loginLabel fs-1">Login</h4>
         <div class="card-body mt-0">
             <EditForm Model="Input" FormName="loginUser" OnValidSubmit="ValidateLogin">
                 <div>
                     <div>
                         <div class="form-floating mb-4 ">
-                            <InputText @bind-Value="Input.Username" type="text" class="form-control" id="floatingInputFilled" placeholder="username ..." />
+                            <InputText @bind-Value="Input.Username" type="text" class="form-control inputLogin border" id="floatingInputFilled" placeholder="username ..." />
                             <label for="floatingInputFilled">Username</label>
                             <span class="form-floating-focused"></span>
                             <ValidationMessage For="@(() => Input.Username)" />
@@ -28,7 +28,7 @@
                     </div>
                     <div>
                         <div class="form-floating mb-4 ">
-                            <InputText @bind-Value="Input.Password" type="text" class="form-control" id="floatingInputFilled" placeholder="password ..." />
+                            <InputText @bind-Value="Input.Password" type="text" class="form-control inputLogin border" id="floatingInputFilled" placeholder="password ..." />
                             <label for="floatingInputFilled">Password</label>
                             <span class="form-floating-focused"></span>
                             <ValidationMessage For="@(() => Input.Password)" />

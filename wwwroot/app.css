@@ -1,5 +1,7 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: rgb(0,16,36) !important;
+    background: linear-gradient(90deg, rgba(0,16,36,1) 1%, rgba(74,74,221,1) 46%, rgba(0,127,255,1) 71%) !important; 
 }
 
 a, .btn-link {
@@ -50,9 +52,19 @@ h1:focus {
     border-color: #929292;
 }
 
-.loginDiv {
-    background-color: #5448F5;
-    height: 50vh;
-    align-items: center;
-    vertical-align: middle;
+.loginLabel {
+  font-family: "Sixtyfour Convergence", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "BLED" 0,
+    "SCAN" 0,
+    "XELA" 0,
+    "YELA" 0;
 }
+
+.homeCard {
+    height: 15vh !important;
+}
+
