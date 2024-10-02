@@ -1,4 +1,5 @@
 @page "/usuariosadd"
+@page "/usuariosadd/{id:guid}"
 @using System.Linq;
 @using Microsoft.EntityFrameworkCore;
 @using Microsoft.AspNetCore.Identity;
@@ -87,9 +88,13 @@
 
   protected override async Task OnParametersSetAsync()
   {
+      if(id is null)
         user = new IdentityUser();
-        roles = roleService.GetAll().ToList();
-        await Task.CompletedTask;
+      else
+        user = userService.GetById(id.Value);
+        
+      roles = roleService.GetAll().ToList();
+      await Task.CompletedTask;
   }
 
   private void changeType()
@@ -121,6 +126,6 @@
   }
   private async Task SetUser()
   {
-    userService.Add(user, Password);
+    await userService.Add(user!, Password);
   }
 }

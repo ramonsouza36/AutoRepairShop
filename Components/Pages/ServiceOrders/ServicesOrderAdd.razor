@@ -92,7 +92,10 @@
 
   protected override async Task OnParametersSetAsync()
   {
+      if(id is null)
         serviceOrder = new ServiceOrder();
+      else
+        serviceOrder = serviceOrderService.GetById(id.Value);
         vehicles = vehicleService.GetAll().ToList();
         products = productService.GetAll().ToList();
         OrderNumber = serviceOrderService.GetMaxOrderNumber() + 1;

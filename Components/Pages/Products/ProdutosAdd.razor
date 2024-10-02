@@ -50,13 +50,16 @@
 
   protected override async Task OnParametersSetAsync()
   {
+      if(id is null)
         product = new Product();
+      else
+        product = productService.GetById(id.Value);
         await Task.CompletedTask;
   }
 
   public async Task AddProduct()
   {
-    productService.Add(product!);
+    await productService.Add(product!);
     await Task.CompletedTask;
   }
 }

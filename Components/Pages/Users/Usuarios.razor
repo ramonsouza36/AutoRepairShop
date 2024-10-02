@@ -39,7 +39,7 @@
                             <td>@item.Email</td>
                             <td>
                                 <div class="divBotoes d-flex justify-content-end">
-                                    <a title="Editar" class="btn btn-secondary text-center me-2" role="button" data-bs-toggle="button">
+                                    <a title="Editar" class="btn btn-secondary text-center me-2" role="button" data-bs-toggle="button" @onclick="(() => Edit(item.Id))">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
                                     <a title="Excluir" class="btn btn-danger text-center" role="button" data-bs-toggle="button">
@@ -73,4 +73,10 @@
         //await UserService.DeleteUserAsync(DbFactory, id);
         navManager.NavigateTo($"users", true);
     } 
+
+    public void Edit(string id)
+    {
+        var editId = Guid.ParseExact(id,"D");
+        navManager.NavigateTo($"/usuariosadd/{editId}");
+    }
 }

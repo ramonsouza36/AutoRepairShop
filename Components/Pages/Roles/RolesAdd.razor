@@ -39,12 +39,15 @@
 
   protected override async Task OnParametersSetAsync()
   {
+      if(id is null)
         role = new IdentityRole();
-        await Task.CompletedTask;
+      else
+        role = roleService.GetById(id.Value);
+      await Task.CompletedTask;
   }
 
   private async Task SetRole()
   {
-    roleService.Add(role);
+    await roleService.Add(role!);
   }
 }

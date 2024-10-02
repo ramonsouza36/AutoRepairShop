@@ -67,14 +67,18 @@
 
   protected override async Task OnParametersSetAsync()
   {
+      if(id is null)
         vehicle = new Vehicle();
-        clients = clientService.GetAll().ToList();
-        await Task.CompletedTask;
+      else
+        vehicle = vehicleService.GetById(id.Value);
+      
+      clients = clientService.GetAll().ToList();
+      await Task.CompletedTask;
   }
 
   public async Task AddVehicle()
   {
-    vehicleService.Add(vehicle!);
+    await vehicleService.Add(vehicle!);
     await Task.CompletedTask;
   }
 }

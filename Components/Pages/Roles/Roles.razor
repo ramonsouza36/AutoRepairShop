@@ -36,7 +36,7 @@
                             <td>@item.Name</td>
                             <td>
                                 <div class="divBotoes d-flex justify-content-end">
-                                    <a title="Editar" class="btn btn-secondary text-center me-2" role="button" data-bs-toggle="button">
+                                    <a title="Editar" class="btn btn-secondary text-center me-2" role="button" data-bs-toggle="button" @onclick="(() => Edit(item.Id))">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
                                     <a title="Excluir" class="btn btn-danger text-center" role="button" data-bs-toggle="button">
@@ -57,6 +57,7 @@
     protected override async Task OnInitializedAsync()
     {
         roles = roleService.GetAll().ToList();
+        await Task.CompletedTask;
     }
 
     public void showRole(string roleId)
@@ -65,10 +66,16 @@
         navManager.NavigateTo($"permissaoadd/{id}");
     }
 
-    public async Task deleteStudent(Guid roleId)
+    public async Task DeleteRole(Guid roleId)
     {
         var role = roleService.GetById(roleId);
         await roleService.DeleteAsync(role);
         navManager.NavigateTo($"permissoes", true);
     } 
+
+    public void Edit(string id)
+    {
+        var editId = Guid.ParseExact(id,"D");
+        navManager.NavigateTo($"/permissaoadd/{editId}");
+    }
 }

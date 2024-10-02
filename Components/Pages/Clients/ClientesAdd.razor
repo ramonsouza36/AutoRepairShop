@@ -43,13 +43,17 @@
 
   protected override async Task OnParametersSetAsync()
   {
+      if(id is null)
         cliente = new Client();
-        await Task.CompletedTask;
+      else
+        cliente = clientService.GetById(id.Value);
+      
+      await Task.CompletedTask;
   }
 
   public async Task AddClient()
   {
-    clientService.Add(cliente!);
+    await clientService.Add(cliente!);
     await Task.CompletedTask;
   }
 }
