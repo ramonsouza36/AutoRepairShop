@@ -50,8 +50,8 @@ public partial class UserService : IRepository<IdentityUser>
 
     public IdentityUser GetById(Guid id)
     {
-        var client = repository.GetById(id);
-        return client;
+        var clients = repository.GetAll();
+        return clients.FirstOrDefault(x => x.Id == id!.ToString())!;
     }
 
     public void Update(IdentityUser client)

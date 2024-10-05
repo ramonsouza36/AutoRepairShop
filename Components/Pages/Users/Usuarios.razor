@@ -1,11 +1,11 @@
 @page "/usuarios"
-
 @using System.Linq;
 @using Microsoft.EntityFrameworkCore;
 @using Microsoft.AspNetCore.Identity;
 @inject NavigationManager navManager;
 @using AutoRepairShop.Components.Services;
 @inject UserService  userService;
+@rendermode InteractiveServer
 
 <div class="container-fluid ps-0">
     <h3>Usuários</h3>

@@ -44,8 +44,8 @@ public partial class RoleService : IRepository<IdentityRole>
 
     public IdentityRole GetById(Guid id)
     {
-        var role = repository.GetById(id);
-        return role;
+        var roles = repository.GetAll();
+        return roles.FirstOrDefault(x => x.Id == id.ToString())!;
     }
 
     public void Update(IdentityRole role)

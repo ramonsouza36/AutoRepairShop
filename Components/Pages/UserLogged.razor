@@ -1,0 +1,31 @@
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity
+@using AutoRepairShop.Components.Pages
+@inject UserManager<IdentityUser> userManager;
+@rendermode InteractiveServer
+<div class="dropdown ms-2">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+        aria-haspopup="true" aria-expanded="false" @onclick = "(() => ChangeVisibility())">
+        Opções
+    </button>
+    <div class="dropdown-menu @visibility" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item ms-0"><i class="fas fa-pencil-alt"> Editar</i></a>
+        <a class="dropdown-item ms-0" href="/Logout"><i class="fas fa-sign-out-alt">Logout</i></a>
+    </div>
+</div>
+
+@code{
+    private void Test(){
+        Console.WriteLine("d");
+    }
+
+    public string visibility = "d-none";
+
+    private void ChangeVisibility()
+    {
+        if(visibility == "d-none")
+            visibility = "d-grid";
+        else
+            visibility  = "d-none";
+    }
+}
