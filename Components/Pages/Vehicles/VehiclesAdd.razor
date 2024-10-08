@@ -13,7 +13,7 @@
 <h3>Cadastro de Veículos</h3>
 
 <div>
-    <a class="btn btn-secondary" href="produtos"> 
+    <a class="btn btn-secondary" href="veiculos"> 
         <i class="fas fa-arrow-left fa-lg text-center justify-content-center fs-5 mt-1"> Voltar</i>
     </a>
     <button class="btn btn-primary active text-center">
@@ -28,26 +28,32 @@
   </div>
   <div class="m-5">
     <label for="pwd" class="form-label">Marca:</label>
-    <input type="text" class="form-control" id="nomeFornecedor" placeholder="Nome Fornecedor" name="nomeFornecedor" @bind-value="@vehicle.Brand">
+    <input type="text" class="form-control" id="nomeFornecedor" placeholder="Marca" name="nomeFornecedor" @bind-value="@vehicle.Brand">
   </div>
   <div class="row col-md-12 d-md-inline-flex">
     <div class="ms-5 col-md-4">
       <label for="pwd" class="form-label">Modelo:</label>
-      <input type="text" class="form-control" id="pwd" placeholder="Quantidade" name="qtd" @bind-value="@vehicle.Model">
+      <input type="text" class="form-control" id="pwd" placeholder="Modelo" name="qtd" @bind-value="@vehicle.Model">
     </div>
     <div class="col-md-3">
       <label for="pwd" class="form-label">Ano:</label>
-      <input type="number" class="form-control" id="pwd" placeholder="Valor" name="value" @bind-value="@vehicle.Year">
+      <input type="number" class="form-control" id="pwd" placeholder="Ano" name="value" @bind-value="@vehicle.Year">
     </div>
     <div class="col-md-3">
       <label for="pwd" class="form-label">Cor:</label>
-      <input type="text" class="form-control" id="pwd" placeholder="Valor" name="value" @bind-value="@vehicle.Color">
+      <input type="text" class="form-control" id="pwd" placeholder="Cor" name="value" @bind-value="@vehicle.Color">
     </div>
   </div>
   <div class="row col-md-12 d-md-inline-flex">
     <div class="m-5 col-md-10">
-      <select class="form-select" id="inputGroupSelect02">
-        <option selected>Escolher o cliente...</option>
+      <select @bind="vehicle.ClientId" class="form-select" id="inputGroupSelect02">
+        @if(selectedClient is not null)
+        {
+          <option value="@selectedClient.Id">@selectedClient.Name</option>
+        } else
+        {
+         <option selected>Escolher o cliente...</option>
+        }
         @foreach(var client in clients)
         {
             <option value="@client.Id">@client.Name</option>
@@ -65,6 +71,8 @@
   public Vehicle? vehicle { get; set; }
   public List<Client>? clients { get; set; }
 
+  public Client? selectedClient { get; set; }
+
   protected override async Task OnParametersSetAsync()
   {
       if(id is null)
@@ -73,6 +81,7 @@
         vehicle = vehicleService.GetById(id.Value);
       
       clients = clientService.GetAll().ToList();
+      selectedClient = clients.FirstOrDefault(x => x.Id == vehicle.ClientId);
       await Task.CompletedTask;
   }
 

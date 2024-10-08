@@ -8,7 +8,7 @@
 @inject ServiceOrderService serviceOrderService
 @inject VehicleService vehicleService
 @inject ProductService productService
-
+@rendermode InteractiveServer
 <PageTitle>Cadastro de Ordem de Serviço</PageTitle>
 
 <h3>Cadastro de Ordem de Serviço</h3>
@@ -58,7 +58,7 @@
   </div>
   <div class="m-5">
     <label for="pwd" class="form-label">Veículo:</label>
-    <select class="form-select" id="inputGroupSelect01">
+    <select @bind="serviceOrder.VehicleId"class="form-select" id="inputGroupSelect01">
       <option selected>Selecione o veículo...</option>
       @if(vehicles is not null)
       {
@@ -96,10 +96,11 @@
         serviceOrder = new ServiceOrder();
       else
         serviceOrder = serviceOrderService.GetById(id.Value);
-        vehicles = vehicleService.GetAll().ToList();
-        products = productService.GetAll().ToList();
-        OrderNumber = serviceOrderService.GetMaxOrderNumber() + 1;
-        await Task.CompletedTask;
+      
+      vehicles = vehicleService.GetAll().ToList();
+      products = productService.GetAll().ToList();
+      OrderNumber = serviceOrderService.GetMaxOrderNumber() + 1;
+      await Task.CompletedTask;
   }
 
   public async Task AddServiceOrder()
