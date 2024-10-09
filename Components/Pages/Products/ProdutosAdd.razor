@@ -3,8 +3,8 @@
 @using Microsoft.EntityFrameworkCore;
 @using AutoRepairShop.DAL.Models;
 @using AutoRepairShop.Components.Services;
+@inject NavigationManager navManager
 @inject ProductService productService
-
 @rendermode InteractiveServer
 
 <PageTitle>Cadastro de Produtos</PageTitle>
@@ -60,6 +60,6 @@
   public async Task AddProduct()
   {
     await productService.Add(product!);
-    await Task.CompletedTask;
+    navManager.NavigateTo("/produtos");
   }
 }

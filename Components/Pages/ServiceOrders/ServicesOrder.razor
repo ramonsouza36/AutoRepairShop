@@ -37,7 +37,7 @@
                                 <a title="Editar" class="btn btn-secondary text-right float-right me-2" role="button" data-bs-toggle="button" @onclick="(() => Edit(serviceOrder.Id))">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <a title="Excluir" class="btn btn-danger text-right float-right me-2" role="button" data-bs-toggle="button">
+                                <a title="Excluir" class="btn btn-danger text-right float-right me-2" role="button" data-bs-toggle="button" @onclick="(() => Delete(serviceOrder))">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @onclick = "(() => OpenModal(serviceOrder.Id))">
@@ -79,5 +79,11 @@
     public void Edit(Guid id)
     {
         navManager.NavigateTo($"/servicesorderadd/{id}");
+    }
+
+    public async Task Delete(ServiceOrder serviceOrder)
+    {
+        await serviceOrderService.DeleteAsync(serviceOrder);
+        navManager.Refresh(true);
     }
 }

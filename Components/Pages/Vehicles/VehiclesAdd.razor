@@ -5,6 +5,7 @@
 @using AutoRepairShop.Components.Services;
 @inject VehicleService vehicleService
 @inject ClientService clientService
+@inject NavigationManager navManager;
 
 @rendermode InteractiveServer
 
@@ -88,6 +89,6 @@
   public async Task AddVehicle()
   {
     await vehicleService.Add(vehicle!);
-    await Task.CompletedTask;
+    navManager.NavigateTo("/veiculos");
   }
 }

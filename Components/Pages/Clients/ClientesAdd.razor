@@ -5,6 +5,8 @@
 @using AutoRepairShop.DAL.Models;
 @using AutoRepairShop.Components.Services;
 @inject ClientService clientService
+@inject NavigationManager navManager;
+@rendermode InteractiveServer
 
 <PageTitle>Cadastro de Clientes</PageTitle>
 
@@ -54,6 +56,6 @@
   public async Task AddClient()
   {
     await clientService.Add(cliente!);
-    await Task.CompletedTask;
+    navManager.NavigateTo($"/clientes");
   }
 }

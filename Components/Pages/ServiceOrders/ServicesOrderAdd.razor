@@ -8,7 +8,9 @@
 @inject ServiceOrderService serviceOrderService
 @inject VehicleService vehicleService
 @inject ProductService productService
+@inject NavigationManager navManager;
 @rendermode InteractiveServer
+
 <PageTitle>Cadastro de Ordem de Serviço</PageTitle>
 
 <h3>Cadastro de Ordem de Serviço</h3>
@@ -123,6 +125,6 @@
 
     await serviceOrderService!.Add(serviceOrder!);
         
-    await Task.CompletedTask;
+    navManager.NavigateTo($"/ordemservico");
   }
 }
