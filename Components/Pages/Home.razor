@@ -5,52 +5,64 @@
 <PageTitle>Home</PageTitle>
 
 <div class="row col-md-12 d-md-inline-flex ">
-  <a href="clientes" class="col-md-3 d-flex justify-content-center bg-primary mx-3  mb-3 homeCard">
-      <div class="card bg-primary">
-        <div class="card-body">
-            <h5 class="card-title text-white fs-4">Clientes</h5>
-            <span class="fas fa-users fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>            
-        </div>
-      </div>
-   </a>
-  <a href="produtos" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
-    <div class="card bg-primary">
-        <div class="card-body">
-            <h5 class="card-title text-white fs-4">Produtos</h5>
-            <span class="fas fa-box fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>            
-        </div>
-    </div>
-  </a>
-  <a href="veiculos" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
-    <div class="card bg-primary">
-        <div class="card-body">
-            <h5 class="card-title text-white fs-4">Veículos</h5>
-            <span class="fas fa-car-side fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>
-        </div>
-    </div>
-  </a>
-  <a href="ordemservico" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
+  <AuthorizeView Roles="Balcao, Administrador">
+    <a href="clientes" class="col-md-3 d-flex justify-content-center bg-primary mx-3  mb-3 homeCard">
         <div class="card bg-primary">
             <div class="card-body">
-                <h5 class="card-title text-white fs-4">Ordem Serviço</h5>
-                <span class="fas fa-clipboard-list fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>
+                <h5 class="card-title text-white fs-4">Clientes</h5>
+                <span class="fas fa-users fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>            
             </div>
         </div>
-  </a>
-  <a href="usuarios" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
+    </a>
+  </AuthorizeView>
+  <AuthorizeView Roles="Balcao, Administrador">
+    <a href="produtos" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
         <div class="card bg-primary">
             <div class="card-body">
-                <h5 class="card-title text-white fs-4">Usuários</h5>
-                <span class="fas fa-user-circle fa-lg  me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>
+                <h5 class="card-title text-white fs-4">Produtos</h5>
+                <span class="fas fa-box fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>            
             </div>
         </div>
-  </a>
-  <a href="permissoes" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
+    </a>
+  </AuthorizeView>
+  <AuthorizeView Roles="Balcao, Administrador">
+    <a href="veiculos" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
         <div class="card bg-primary">
             <div class="card-body">
-                <h5 class="card-title text-white fs-4">Permissões</h5>
-                <span class="fas fa-key fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>
+                <h5 class="card-title text-white fs-4">Veículos</h5>
+                <span class="fas fa-car-side fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>
             </div>
         </div>
-  </a>
+    </a>
+  </AuthorizeView>
+  <AuthorizeView Roles="Balcao, Administrador">
+    <a href="ordemservico" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-white fs-4">Ordem Serviço</h5>
+                    <span class="fas fa-clipboard-list fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>
+                </div>
+            </div>
+    </a>
+  </AuthorizeView>
+  <AuthorizeView Roles="Administrador">
+    <a href="usuarios" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-white fs-4">Usuários</h5>
+                    <span class="fas fa-user-circle fa-lg  me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>
+                </div>
+            </div>
+    </a>
+  </AuthorizeView>
+  <AuthorizeView Roles="Administrador">
+    <a href="permissoes" class="col-md-3 d-flex justify-content-center bg-primary mx-3 mb-3 homeCard">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-white fs-4">Permissões</h5>
+                    <span class="fas fa-key fa-lg me-3 text-white d-flex justify-content-center fs-2" aria-hidden="true"></span>
+                </div>
+            </div>
+    </a>
+  </AuthorizeView>
 </div> 

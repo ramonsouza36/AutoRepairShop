@@ -1,7 +1,11 @@
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Identity
 @using AutoRepairShop.Components.Pages
 @inject UserManager<IdentityUser> userManager;
+@inject SignInManager<IdentityUser> signInManager;
+@inject NavigationManager navManager;
 @rendermode InteractiveServer
 <div class="dropdown ms-2">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
@@ -10,11 +14,15 @@
     </button>
     <div class="dropdown-menu @visibility" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item ms-0"><i class="fas fa-pencil-alt"> Editar</i></a>
-        <a class="dropdown-item ms-0" href="/Logout"><i class="fas fa-sign-out-alt">Logout</i></a>
+        <a class="dropdown-item ms-0" href="logout"><i class="fas fa-sign-out-alt" >Logout</i></a>
     </div>
 </div>
 
 @code{
+
+    private HttpContext? httpContext;
+
+    
     private void Test(){
         Console.WriteLine("d");
     }

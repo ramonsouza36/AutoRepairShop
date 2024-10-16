@@ -1,0 +1,23 @@
+@page "/logout"
+@using Microsoft.AspNetCore.Authentication.Cookies;
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navManager;
+@inject SignInManager<IdentityUser> signInManager;
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {       
+        await signInManager.SignOutAsync();
+        navManager.NavigateTo($"/",true);
+    }
+}
