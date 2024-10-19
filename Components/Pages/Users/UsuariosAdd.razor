@@ -8,6 +8,7 @@
 @using System.Security.Cryptography;
 @using AutoRepairShop.Components.Services;
 @inject NavigationManager navManager;
+@inject UserManager<IdentityUser> userManager;
 @inject UserService  userService;
 @inject RoleService  roleService;
 @rendermode InteractiveServer
@@ -33,13 +34,18 @@
         </div>
         <div class="col-md-4">
             <label class="label">Tipo de usuário</label>
-            <select class="form-select border-secondary col-md-4 me-2" type="text" placeholder="Nome Curso">
-                <option value=@Guid.Empty>Selecione o tipo....</option>
+            <select @bind="RoleName" class="form-select border-secondary col-md-4 me-2" type="text" placeholder="Nome Curso">
+                @if(string.IsNullOrEmpty(RoleName)){
+                    <option value="" selected>Selecione o tipo....</option>
+                }
+                @if(!string.IsNullOrEmpty(RoleName)){
+                    <option value=@RoleName>@RoleName</option>
+                }
                 @if(roles != null)
                 {
                     foreach(var item in roles!)
                     {
-                        <option value="@item.Id">@item.Name</option>
+                        <option value="@item.Name">@item.Name</option>
                     }
                 }
             </select>
@@ -81,6 +87,7 @@
     public string ClassConfirmation = "fas fa-eye";
     public string ClassToast { get; set; } = "toast hide";
     public string Message = string.Empty;
+    public string RoleName = string.Empty;
     public string Status = string.Empty;
     [Parameter]
     public Guid? id { get; set; }
@@ -88,6 +95,8 @@
     public Guid typeId = Guid.Empty;
 
     public List<IdentityRole>? roles;
+
+    public IdentityRole? role;
 
     public IdentityUser? user { get; set; }
 
@@ -99,8 +108,10 @@
         user = userService.GetById(id.Value);
         
       roles = roleService.GetAll().ToList();
-      await Task.CompletedTask;
-  }
+      var userRoles = await userManager.GetRolesAsync(user);
+      if(userRoles.Count != 0)
+        RoleName = userRoles.FirstOrDefault();
+    }
 
   private void changeType()
   {
@@ -132,5 +143,6 @@
   private async Task SetUser()
   {
     await userService.Add(user!, Password);
+    await userService.UserRole(user!, RoleName);
   }
 }

@@ -40,7 +40,7 @@
                                     <a title="Editar" class="btn btn-secondary text-center me-2" role="button" data-bs-toggle="button" @onclick="(() => Edit(item.Id))">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <a title="Excluir" class="btn btn-danger text-center" role="button" data-bs-toggle="button">
+                                    <a title="Excluir" class="btn btn-danger text-center" role="button" data-bs-toggle="button" @onclick="(() => DeleteRole(item.Id))">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </div>
@@ -67,10 +67,13 @@
         navManager.NavigateTo($"permissaoadd/{id}");
     }
 
-    public async Task DeleteRole(Guid roleId)
+    public async Task DeleteRole(string roleId)
     {
-        var role = roleService.GetById(roleId);
-        await roleService.DeleteAsync(role);
+        var role = roles.FirstOrDefault(x => x.Id == roleId);
+        
+        if(role is not null)
+            await roleService.DeleteAsync(role);
+        
         navManager.NavigateTo($"permissoes", true);
     } 
 

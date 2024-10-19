@@ -42,7 +42,7 @@
                                     <a title="Editar" class="btn btn-secondary text-center me-2" role="button" data-bs-toggle="button" @onclick="(() => Edit(item.Id))">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <a title="Excluir" class="btn btn-danger text-center" role="button" data-bs-toggle="button">
+                                    <a title="Excluir" class="btn btn-danger text-center" role="button" data-bs-toggle="button" @onclick="(() => Delete(item.Id))">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </div>
@@ -62,16 +62,13 @@
         users = userService.GetAll().ToList();
     }
 
-    public void showUser(string userId)
+    public async Task Delete(string id)
     {
-        var id = Guid.ParseExact(userId,"D");
-        navManager.NavigateTo($"useradd/{id}");
-    }
-
-    public async Task deleteStudent(string id)
-    {
-        //await UserService.DeleteUserAsync(DbFactory, id);
-        navManager.NavigateTo($"users", true);
+        var user = users!.FirstOrDefault(x => x.Id == id);
+        if(user is not null)
+            await userService.DeleteAsync(user!);
+        
+        navManager.NavigateTo($"/usuarios", true);
     } 
 
     public void Edit(string id)

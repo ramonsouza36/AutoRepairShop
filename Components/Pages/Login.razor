@@ -87,6 +87,18 @@
     } *@
     public async Task ValidateLogin()
     {
+        var identity = new ClaimsIdentity("password");
+        var users = userService.GetAll();
+        var user = users.FirstOrDefault(u => u.UserName == Input.Username);
+        var roles = await userManager.GetRolesAsync(user);
+        identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+        if(roles.Count() > 0)
+        {
+            foreach(var role in roles)
+                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+        }
+        var principal = new ClaimsPrincipal(identity);
+        var authProperties = new AuthenticationProperties();
         var canLogin = await signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);  
         if(canLogin.Succeeded)
         {

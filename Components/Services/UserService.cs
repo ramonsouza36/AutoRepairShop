@@ -54,6 +54,11 @@ public partial class UserService : IRepository<IdentityUser>
         return clients.FirstOrDefault(x => x.Id == id!.ToString())!;
     }
 
+    public async Task UserRole(IdentityUser user, string roleName)
+    {
+        await userManager.AddToRoleAsync(user, roleName);
+    }
+
     public void Update(IdentityUser client)
     {
         repository.Update(client);
