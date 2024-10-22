@@ -18,6 +18,12 @@
         <div class="card-body mt-0">
             <EditForm Model="Input" FormName="loginUser" OnValidSubmit="ValidateLogin">
                 <div>
+                    @if(!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="bg-danger mb-2 fs-5 text-white text-center">
+                            <span>@errorMessage</span>
+                        </div>
+                    }
                     <div>
                         <div class="form-floating mb-4 ">
                             <InputText @bind-Value="Input.Username" type="text" class="form-control inputLogin border" id="floatingInputFilled" placeholder="username ..." />
@@ -67,43 +73,35 @@
             }
         }
     }
-
-    @* public async Task ValidateLogin()
-    {
-        var identity = new ClaimsIdentity("password");
-        var users = userService.GetAll();
-        var user = users.FirstOrDefault(u => u.UserName == username);
-        var roles = await userManager.GetRolesAsync(user);
-        identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-        if(roles.Count() > 0)
-        {
-            foreach(var role in roles)
-                identity.AddClaim(new Claim(ClaimTypes.Role, role));
-        }
-        var principal = new ClaimsPrincipal(identity);
-        var authProperties = new AuthenticationProperties();
-        await httpContextAccessor!.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal,authProperties);
-        //return Redirect("/");
-    } *@
     public async Task ValidateLogin()
     {
         var identity = new ClaimsIdentity("password");
         var users = userService.GetAll();
         var user = users.FirstOrDefault(u => u.UserName == Input.Username);
-        var roles = await userManager.GetRolesAsync(user);
-        identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-        if(roles.Count() > 0)
+        if(user is not null)
         {
-            foreach(var role in roles)
-                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+            var roles = await userManager.GetRolesAsync(user);
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            if(roles.Count() > 0)
+            {
+                foreach(var role in roles)
+                    identity.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
+            var principal = new ClaimsPrincipal(identity);
+            var authProperties = new AuthenticationProperties();
+            var canLogin = await signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);  
+            if(canLogin.Succeeded)
+            {
+                navManager.NavigateTo("/");
+            } 
+            else{
+                errorMessage = "Usuário ou senha incorreto!";
+            }
         }
-        var principal = new ClaimsPrincipal(identity);
-        var authProperties = new AuthenticationProperties();
-        var canLogin = await signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);  
-        if(canLogin.Succeeded)
+        else
         {
-            navManager.NavigateTo("/");
-        } 
+            errorMessage = "Usuário ou senha incorreto!";
+        }
     }
 
     private sealed class InputModel
