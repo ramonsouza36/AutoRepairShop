@@ -37,41 +37,76 @@
   <div class="m-5">
     <label for="pwd" class="form-label">Veículo:</label>
     <select @bind="serviceOrder.VehicleId"class="form-select" id="inputGroupSelect01">
+      @if(serviceOrder.VehicleId == Guid.Empty)
+      {
+        <option value=@Guid.Empty selected>Selecione o veículo...</option>
+      }
       @if(vehicles is not null)
       {
           foreach(var vehicle in vehicles)
           {
             <option value=@vehicle.Id>@vehicle.Model - @vehicle.Plate</option>
           }
-      } else
-      {
-        <option selected>Selecione o veículo...</option>
       }
     </select>
   </div>
-  <div class="m-5 overflow-auto">
-    <label for="pwd" class="form-label">Produtos Usados:</label>
-    <ul class="list-group ">
-      @if(products is not null)
-      {
-        foreach(var product in products)
+  <div class="m-5">
+    <label for="pwd" class="form-label">Produtos:</label>
+    <div class="input-group">
+      <select @bind="productUsed.ProductName"class="form-select">
+        @if(string.IsNullOrEmpty(productUsed.ProductName))
         {
-          <li class="list-group-item">
-            <div class="row col-md-12 d-md-inline-flex">
-              <div class="col-md-6">
-                <input class="form-check-input me-3 align-middle" type="checkbox" @bind-value="@product.IsSelected">
-                  <label class="align-middle mt-1">
-                    @product.Name
-                  </label>
-               </div>
-              <div class="col-md-6">
-                <input class="form-control me-1 align-middle" type="number" @bind-value="@product.QuantityUsed">
-              </div>
-            </div>
-          </li> 
+          <option value=@string.Empty selected>Selecione o veículo...</option>
         }
-      }
-    </ul>
+        @if(productUsed is not null)
+        {
+            foreach(var product in products)
+            {
+              <option value=@product.Name>@product.Name</option>
+            }
+        } else
+        {
+          <option value="" selected>Selecione o produto...</option>
+        }
+      </select>
+        <button class="btn btn-outline-primary" type="button" id="button-addon2" @onclick = "(() => AddProductUsed())">Adicionar</button>
+    </div>
+  </div>
+  <div class="accordion m-5" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" @onclick = "(() => ShowCollapse())" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Produtos Usados
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse @collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <ul class="list-group ">
+            @if(productsUsed.Count != 0)
+            {
+              foreach(var product in productsUsed)
+              {
+                <li class="list-group-item">
+                  <div class="row col-md-12 d-md-inline-flex">
+                    <div class="col-md-6">
+                      <label class="align-middle mt-1">
+                          @product.ProductName
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                      <input class="form-control me-1 align-middle" type="number" @bind-value="@product.QuantityUsed">
+                    </div>
+                  </div>
+                </li> 
+              }
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="m-5 overflow-auto">
+    
   </div>
   <div class="form-check m-5">
     <input class="form-check-input" type="checkbox" id="flexCheckDefault" @bind-value="@serviceOrder.Authorized">
@@ -91,42 +126,61 @@
   public List<Vehicle>? vehicles { get; set; }
 
   public List<Product>? products { get; set; }
+  
+  public ProductsUsed? productUsed { get; set; }
+
+  public List<ProductsUsed>? productsUsed { get; set; }
+
+  public string collapse = "collapse";
+
 
   public long OrderNumber = 0;
 
   protected override async Task OnParametersSetAsync()
   {
       if(id is null)
+      {
         serviceOrder = new ServiceOrder();
+        serviceOrder.VehicleId = Guid.Empty;
+      }
       else
         serviceOrder = serviceOrderService.GetById(id.Value);
       
       vehicles = vehicleService.GetAll().ToList();
       products = productService.GetAll().ToList();
       OrderNumber = serviceOrderService.GetMaxOrderNumber() + 1;
+      if(!string.IsNullOrEmpty(serviceOrder.ProductsUsed))
+      {
+        productsUsed = JsonSerializer.Deserialize<List<ProductsUsed>>(serviceOrder.ProductsUsed);
+      }
+      productUsed = new ProductsUsed();
       await Task.CompletedTask;
   }
 
   public async Task AddServiceOrder()
   {
     serviceOrder!.OrderNumber = OrderNumber;
-    var usedProducts = products!.FindAll(p => p.IsSelected);
-    List<ProductsUsed> usedItens = new();
-    foreach(var usedProduct in usedProducts)
-    {
-      var prod = new ProductsUsed();
-      prod.ProductName = usedProduct.Name;
-      prod.QuantityUsed = usedProduct.QuantityUsed;
-      prod.TotalValue = usedProduct.Value * usedProduct.QuantityUsed;
-      usedItens.Add(prod);
-    }
-
+    
     var options = new JsonSerializerOptions { WriteIndented = true };
-    string jsonString = JsonSerializer.Serialize<List<ProductsUsed>>(usedItens,options);
+    string jsonString = JsonSerializer.Serialize<List<ProductsUsed>>(productsUsed,options);
     serviceOrder!.ProductsUsed = jsonString;
 
     await serviceOrderService!.Add(serviceOrder!);
         
     navManager.NavigateTo($"/ordemservico");
+  }
+
+  public void ShowCollapse()
+  {
+      if(collapse == "collapse")
+        collapse = "collapse show";
+      else
+        collapse = "collapse";
+  }
+
+  public void AddProductUsed()
+  {
+    if(productUsed is not null || !string.IsNullOrEmpty(productUsed.ProductName))
+      productsUsed!.Add(productUsed!);
   }
 }
