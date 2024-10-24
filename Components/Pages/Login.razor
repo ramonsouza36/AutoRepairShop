@@ -81,7 +81,7 @@
         if(user is not null)
         {
             var roles = await userManager.GetRolesAsync(user);
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user!.UserName!));
             if(roles.Count() > 0)
             {
                 foreach(var role in roles)

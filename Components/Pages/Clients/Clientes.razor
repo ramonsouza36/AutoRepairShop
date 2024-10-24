@@ -17,7 +17,7 @@
         <div class="row col-md-12 d-md-inline-flex mt-5">
             <div class="col-md-6">
                 <label for="email" class="form-label">Nome:</label>
-                <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@filter.Name">
+                <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@filter!.Name">
             </div>
             <div class="col-md-6">
                 <label for="email" class="form-label">Documento:</label>
@@ -42,7 +42,7 @@
             </thead>
             <tbody>
                 @if(clients is not null){
-                    foreach(var client in filterClients)
+                    foreach(var client in filterClients!)
                     {   <tr>
                             <td class="fs-5 text-center">@client.Name</td>
                             <td class="fs-5 text-center">@client.DocumentNumber</td>
@@ -80,7 +80,7 @@
 
     public void Filter()
     {
-        if(!string.IsNullOrEmpty(filter.Name))
+        if(!string.IsNullOrEmpty(filter!.Name))
           filterClients = clients!.Where(v => v.Name!.ToUpper().StartsWith(filter.Name.ToUpper())).ToList();
 
         else if(!string.IsNullOrEmpty(filter.Document))

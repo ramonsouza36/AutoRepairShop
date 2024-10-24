@@ -16,7 +16,7 @@
     <div class="row col-md-12 d-md-inline-flex mt-5">
         <div class="col-md-6">
             <label for="email" class="form-label">Nome Produto:</label>
-            <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@filter.Name">
+            <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@filter!.Name">
         </div>
         <div class="col-md-6">
             <label for="email" class="form-label">Nome Fabricante:</label>
@@ -82,11 +82,11 @@
 
     public void Filter()
     {
-        if(!string.IsNullOrEmpty(filter.Name))
-          filterProducts = products.Where(v => v.Name.ToUpper().Contains(filter.Name.ToUpper())).ToList();
+        if(!string.IsNullOrEmpty(filter!.Name))
+          filterProducts = products!.Where(v => v.Name!.ToUpper().Contains(filter.Name.ToUpper())).ToList();
 
         else if(!string.IsNullOrEmpty(filter.Supplier))
-          filterProducts = products.Where(v => v.Supplier.ToUpper().Contains(filter.Supplier.ToUpper())).ToList();
+          filterProducts = products!.Where(v => v.Supplier!.ToUpper().Contains(filter.Supplier.ToUpper())).ToList();
 
         else
             filterProducts = productService.GetAll().ToList();

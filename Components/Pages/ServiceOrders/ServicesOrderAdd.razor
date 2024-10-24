@@ -32,7 +32,7 @@
 <div class="border border-2 border-dark mt-5">
   <div class="m-5">
     <label for="email" class="form-label">Descrição:</label>
-    <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@serviceOrder.Description">
+    <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" @bind-value="@serviceOrder!.Description">
   </div>
   <div class="m-5">
     <label for="pwd" class="form-label">Veículo:</label>
@@ -53,14 +53,14 @@
   <div class="m-5">
     <label for="pwd" class="form-label">Produtos:</label>
     <div class="input-group">
-      <select @bind="productUsed.ProductName"class="form-select">
-        @if(string.IsNullOrEmpty(productUsed.ProductName))
+      <select @bind="productUsed!.ProductName"class="form-select">
+        @if(string.IsNullOrEmpty(productUsed!.ProductName))
         {
           <option value=@string.Empty selected>Selecione o veículo...</option>
         }
         @if(productUsed is not null)
         {
-            foreach(var product in products)
+            foreach(var product in products!)
             {
               <option value=@product.Name>@product.Name</option>
             }
@@ -82,7 +82,7 @@
       <div id="collapseOne" class="accordion-collapse @collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
         <div class="accordion-body">
           <ul class="list-group ">
-            @if(productsUsed.Count != 0)
+            @if(productsUsed!.Count != 0)
             {
               foreach(var product in productsUsed)
               {
@@ -149,6 +149,7 @@
       vehicles = vehicleService.GetAll().ToList();
       products = productService.GetAll().ToList();
       OrderNumber = serviceOrderService.GetMaxOrderNumber() + 1;
+      productsUsed = new List<ProductsUsed>();
       if(!string.IsNullOrEmpty(serviceOrder.ProductsUsed))
       {
         productsUsed = JsonSerializer.Deserialize<List<ProductsUsed>>(serviceOrder.ProductsUsed);
@@ -162,6 +163,11 @@
     serviceOrder!.OrderNumber = OrderNumber;
     
     var options = new JsonSerializerOptions { WriteIndented = true };
+    foreach(var prod in productsUsed!)
+    {
+      var product = products!.FirstOrDefault(x => x.Name == prod.ProductName);
+      prod.TotalValue = prod.QuantityUsed * product!.Value; 
+    }
     string jsonString = JsonSerializer.Serialize<List<ProductsUsed>>(productsUsed,options);
     serviceOrder!.ProductsUsed = jsonString;
 
@@ -180,7 +186,7 @@
 
   public void AddProductUsed()
   {
-    if(productUsed is not null || !string.IsNullOrEmpty(productUsed.ProductName))
+    if(productUsed is not null || !string.IsNullOrEmpty(productUsed!.ProductName))
       productsUsed!.Add(productUsed!);
   }
 }

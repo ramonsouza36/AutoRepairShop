@@ -30,7 +30,7 @@
     <div class="row col-md-12 d-md-inline-flex mt-5">
         <div class="col-md-4">
             <label class="label">Nome do usuário</label>
-            <input class="form-control border-secondary col-md-3" type="text" placeholder="Nome usuário" @bind-value="@user.UserName"/>
+            <input class="form-control border-secondary col-md-3" type="text" placeholder="Nome usuário" @bind-value="@user!.UserName"/>
         </div>
         <div class="col-md-4">
             <label class="label">Tipo de usuário</label>
@@ -110,7 +110,7 @@
       roles = roleService.GetAll().ToList();
       var userRoles = await userManager.GetRolesAsync(user);
       if(userRoles.Count != 0)
-        RoleName = userRoles.FirstOrDefault();
+        RoleName = userRoles!.FirstOrDefault()!;
     }
 
   private void changeType()

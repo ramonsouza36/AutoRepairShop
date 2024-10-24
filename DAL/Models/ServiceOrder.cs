@@ -18,6 +18,10 @@ public partial class ServiceOrder
 
     public decimal Value { get; set; }
 
+    public bool Paid { get; set; } 
+
+    public DateTime PaymentDate { get; set; }
+    
     #endregion Properties
 
     #region  Foreign Key

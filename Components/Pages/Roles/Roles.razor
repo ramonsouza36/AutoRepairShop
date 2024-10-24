@@ -69,7 +69,7 @@
 
     public async Task DeleteRole(string roleId)
     {
-        var role = roles.FirstOrDefault(x => x.Id == roleId);
+        var role = roles!.FirstOrDefault(x => x.Id == roleId);
         
         if(role is not null)
             await roleService.DeleteAsync(role);

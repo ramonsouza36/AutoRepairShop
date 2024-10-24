@@ -60,6 +60,7 @@
     protected override async Task OnInitializedAsync()
     {
         users = userService.GetAll().ToList();
+        await Task.CompletedTask;
     }
 
     public async Task Delete(string id)

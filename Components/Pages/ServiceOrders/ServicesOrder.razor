@@ -71,7 +71,7 @@
         var serviceOrder = serviceOrderService.GetById(id);
         var prodQuant = JsonSerializer.Deserialize<List<ProductsUsed>>(serviceOrder!.ProductsUsed!);
         Modal!.Products = new List<ProductsUsed>();
-        Modal!.Products.AddRange(prodQuant);
+        Modal!.Products.AddRange(prodQuant!);
         Modal!.Open();
         //Task.CompletedTask;
     }
