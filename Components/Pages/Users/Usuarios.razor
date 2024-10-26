@@ -1,5 +1,6 @@
 @page "/usuarios"
 @using System.Linq;
+@using AutoRepairShop.Components.Pages.Modals
 @using Microsoft.EntityFrameworkCore;
 @using Microsoft.AspNetCore.Identity;
 @inject NavigationManager navManager;
@@ -42,9 +43,12 @@
                                     <a title="Editar" class="btn btn-secondary text-center me-2" role="button" data-bs-toggle="button" @onclick="(() => Edit(item.Id))">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <a title="Excluir" class="btn btn-danger text-center" role="button" data-bs-toggle="button" @onclick="(() => Delete(item.Id))">
+                                    <a title="Excluir" class="btn btn-danger text-center me-2" role="button" data-bs-toggle="button" @onclick="(() => Delete(item.Id))">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" @onclick = "(() => OpenModal(item.Id))">
+                                        <i class="fas fa-key"/>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -54,8 +58,11 @@
         </table>
     </div>
 </div>
+<ChangePassword @ref="Modal"></ChangePassword>
 @code {
     List<IdentityUser>? users { get; set; }
+
+    private ChangePassword? Modal { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,5 +83,12 @@
     {
         var editId = Guid.ParseExact(id,"D");
         navManager.NavigateTo($"/usuariosadd/{editId}");
+    }
+
+    public  void OpenModal(string id)
+    {
+        Modal!.UserId = id;
+        Modal!.Open();
+        //Task.CompletedTask;
     }
 }
