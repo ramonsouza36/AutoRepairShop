@@ -75,6 +75,36 @@
             </div>
         </div>
     }
+    <div class="accordion m-5" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" @onclick = "(() => ShowCollapse())" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Permissões
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse @collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <ul class="list-group ">
+            @if(UserRoles is not null && UserRoles!.Count != 0)
+            {
+              foreach(var userRole in UserRoles)
+              {
+                <li class="list-group-item">
+                  <div class="row col-md-12 d-md-inline-flex">
+                    <div class="col-md-6">
+                      <label class="align-middle mt-1">
+                          @userRole
+                        </label>
+                    </div>
+                  </div>
+                </li> 
+              }
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
  @code{
@@ -89,6 +119,8 @@
     public string Message = string.Empty;
     public string RoleName = string.Empty;
     public string Status = string.Empty;
+    public List<string>? UserRoles;
+    public string collapse = "collapse";
     [Parameter]
     public Guid? id { get; set; }
 
@@ -109,8 +141,9 @@
         
       roles = roleService.GetAll().ToList();
       var userRoles = await userManager.GetRolesAsync(user);
-      if(userRoles.Count != 0)
-        RoleName = userRoles!.FirstOrDefault()!;
+      UserRoles = userRoles.ToList();
+      if(UserRoles.Count != 0)
+        RoleName = UserRoles!.FirstOrDefault()!;
     }
 
   private void changeType()
@@ -142,7 +175,17 @@
   }
   private async Task SetUser()
   {
-    await userService.Add(user!, Password);
-    await userService.UserRole(user!, RoleName);
+    if(id is null)
+        await userService.Add(user!, Password);
+    if(!UserRoles!.Any(x => x == RoleName))
+        await userService.UserRole(user!, RoleName);
+  }
+
+  public void ShowCollapse()
+  {
+      if(collapse == "collapse")
+        collapse = "collapse show";
+      else
+        collapse = "collapse";
   }
 }

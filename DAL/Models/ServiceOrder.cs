@@ -10,11 +10,15 @@ public partial class ServiceOrder
 
     public string? Description { get; set; }
 
+    public DateTime CreateDate { get; set; }
+    
     public long OrderNumber { get; set; }
 
     public string? ProductsUsed { get; set; }
 
     public bool Authorized { get; set; } 
+    
+    public DateTime AuthorizedDate { get; set; }
 
     public decimal Value { get; set; }
 
