@@ -5,7 +5,7 @@ public partial class ServiceOrderFilter
 
     public DateTime? CreatedDate { get; set; }
 
-    public bool? IsAuthorized { get; set; }
+    public int IsAuthorized { get; set; } = 1;
 
     #endregion Properties
 }

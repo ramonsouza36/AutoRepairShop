@@ -41,6 +41,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         _dbSet.Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
+        _context.SaveChangesAsync();
     }
 
     public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)

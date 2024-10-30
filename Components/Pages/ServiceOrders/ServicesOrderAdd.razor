@@ -109,7 +109,7 @@
     
   </div>
   <div class="form-check m-5">
-    <input class="form-check-input" type="checkbox" id="flexCheckDefault" @bind-value="@serviceOrder.Authorized">
+    <input class="form-check-input" type="checkbox" id="flexCheckDefault" checked="@serviceOrder.Authorized" @bind-value="@serviceOrder.Authorized">
     <label class="form-check-label" for="flexCheckDefault">
       Autorizado
     </label>
@@ -148,7 +148,7 @@
       
       vehicles = vehicleService.GetAll().ToList();
       products = productService.GetAll().ToList();
-      OrderNumber = serviceOrderService.GetMaxOrderNumber() + 1;
+      OrderNumber =  serviceOrder.OrderNumber > 0 ? serviceOrder.OrderNumber : serviceOrderService.GetMaxOrderNumber() + 1;
       productsUsed = new List<ProductsUsed>();
       if(!string.IsNullOrEmpty(serviceOrder.ProductsUsed))
       {
@@ -171,8 +171,11 @@
     string jsonString = JsonSerializer.Serialize<List<ProductsUsed>>(productsUsed,options);
     serviceOrder!.ProductsUsed = jsonString;
 
-    await serviceOrderService!.Add(serviceOrder!);
-        
+    if(id is null)
+      await serviceOrderService!.Add(serviceOrder!);
+    else
+      serviceOrderService!.Update(serviceOrder!);
+
     navManager.NavigateTo($"/ordemservico");
   }
 
