@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 public partial class ServiceOrder
 {
     public ServiceOrder()
@@ -25,6 +27,9 @@ public partial class ServiceOrder
     public bool Paid { get; set; } 
 
     public DateTime PaymentDate { get; set; }
+
+    [NotMapped]
+    public string? PlateModel { get; set;}
     
     #endregion Properties
 
