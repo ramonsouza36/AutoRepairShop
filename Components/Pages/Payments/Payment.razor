@@ -1,4 +1,4 @@
-@page "/ordemservico"
+@page "/pagamentos"
 @using AutoRepairShop.Components.Pages.Modals
 @using AutoRepairShop.Components.Services
 @using AutoRepairShop.DAL.Models
@@ -9,13 +9,13 @@
 @inject NavigationManager navManager
 @rendermode InteractiveServer
 
-<PageTitle>Ordem Serviço</PageTitle>
+<PageTitle>Pagamentos</PageTitle>
 
-<h3>Ordem Serviço</h3>
+<h3>Pagamentos</h3>
 
-<a href="servicesorderadd" class="btn btn-primary active mb-3 text-center" role="button" data-bs-toggle="button" aria-pressed="true">
+@* <a href="servicesorderadd" class="btn btn-primary active mb-3 text-center" role="button" data-bs-toggle="button" aria-pressed="true">
     <i class="fas fa-plus"> Adicionar</i>
-</a>
+</a> *@
 <div>
         <div class="row col-md-12 d-md-inline-flex mt-5">
             <div class="col-md-4">
@@ -23,12 +23,12 @@
                 <input type="text" class="form-control" id="nome" placeholder="Número" name="nome" @bind-value="@filter!.OrderNumber">
             </div>
             <div class="col-md-4">
-                <label for="email" class="form-label">Data:</label>
-                <input type="date" class="form-control" id="nome" placeholder="Data" name="nome" @bind-value="@filter.CreatedDate">
+                <label for="email" class="form-label">Data de Pagamentos:</label>
+                <input type="date" class="form-control" id="nome" placeholder="Data" name="nome" @bind-value="@filter.PaymentDate">
             </div>
             <div class="col-md-4">
-                <label for="email" class="form-label">Autorizado:</label>
-                <select @bind="filter!.IsAuthorized"class="form-select" id="inputGroupSelect01">
+                <label for="email" class="form-label">Pago:</label>
+                <select @bind="filter!.IsPaid"class="form-select" id="inputGroupSelect01">
                         <option value=1 selected>Ambos</option>
                         <option value=2>Sim</option>
                         <option value=3>Não</option>
@@ -48,8 +48,8 @@
             <tr>
                 <th class="fs-5 text-center">Número</th>
                 <th class="fs-5 text-center">Placa - Veículo</th>
-                <th class="fs-5 text-center">Data</th>
-                <th class="fs-5 text-center">Autorizado</th>
+                <th class="fs-5 text-center">Pago</th>
+                <th class="fs-5 text-center">Data de Pagamento</th>
                 <th class="fs-5 d-flex justify-content-end">Opções</th>
             </tr>
         </thead>
@@ -59,21 +59,18 @@
                 {   <tr>
                         <td class="fs-5 text-center">@serviceOrder.OrderNumber</td>
                         <td class="fs-5 text-center">@serviceOrder.PlateModel</td>
-                        <td class="fs-5 text-center">@serviceOrder.CreateDate.Date</td>
-                        @if(!serviceOrder.Authorized){
+                        @if(!serviceOrder.Paid){
                             <td class="fs-5 text-center">Não</td>
                         }
                         else
                         {
                             <td class="fs-5 text-center">Sim</td>
                         }
+                        <td class="fs-5 text-center">@serviceOrder.PaymentDate.Date</td>
                         <td class="fs-5 text-center"> 
                             <div class="divBotoes d-flex justify-content-end">
                                 <a title="Editar" class="btn btn-secondary text-right float-right me-2" role="button" data-bs-toggle="button" @onclick="(() => Edit(serviceOrder.Id))">
                                     <i class="fas fa-pencil-alt"></i>
-                                </a>
-                                <a title="Excluir" class="btn btn-danger text-right float-right me-2" role="button" data-bs-toggle="button" @onclick="(() => Delete(serviceOrder))">
-                                    <i class="fas fa-trash-alt"></i>
                                 </a>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @onclick = "(() => OpenModal(serviceOrder.Id))">
                                     <i class="fas fa-eye"/>
@@ -94,7 +91,7 @@
     public List<ServiceOrder>? serviceOrders { get; set; }
     
     public List<ServiceOrder>? filterServiceOrders{ get; set; }
-    public ServiceOrderFilter? filter { get; set; }
+    public PaymentFilter? filter { get; set; }
     private Modal? Modal { get; set; }
 
     protected override async Task OnParametersSetAsync()
@@ -106,7 +103,7 @@
             serviceOrder.PlateModel = vehicle.Plate + " - " + vehicle.Model;
         }
 
-        filter = new ServiceOrderFilter();
+        filter = new PaymentFilter();
         filterServiceOrders = serviceOrders;
         await Task.CompletedTask;
     }
@@ -118,8 +115,6 @@
         Modal!.Products = new List<ProductsUsed>();
         Modal!.Products.AddRange(prodQuant!);
         Modal!.Open();
-        filter = new ServiceOrderFilter();
-        //Task.CompletedTask;
     }
 
     public void Edit(Guid id)
@@ -138,15 +133,15 @@
         if(filter!.OrderNumber is not null)
           filterServiceOrders = serviceOrders!.Where(v => v.OrderNumber! == filter.OrderNumber).ToList();
 
-        else if(filter.CreatedDate is not null)
-          filterServiceOrders = serviceOrders!.Where(v => v.CreateDate.Date == filter.CreatedDate.Value.Date).ToList();
+        else if(filter.PaymentDate is not null)
+          filterServiceOrders = serviceOrders!.Where(v => v.PaymentDate.Date == filter.PaymentDate.Value.Date).ToList();
         
-        else if(filter.IsAuthorized > 1)
+        else if(filter.IsPaid > 1)
         {
-          if(filter!.IsAuthorized == 2)
-            filterServiceOrders = serviceOrders!.Where(v => v.Authorized).ToList();
-          if(filter!.IsAuthorized == 3)
-            filterServiceOrders = serviceOrders!.Where(v => !v.Authorized).ToList();
+          if(filter!.IsPaid == 2)
+            filterServiceOrders = serviceOrders!.Where(v => v.Paid).ToList();
+          if(filter!.IsPaid == 3)
+            filterServiceOrders = serviceOrders!.Where(v => !v.Paid).ToList();
         }
 
         else
