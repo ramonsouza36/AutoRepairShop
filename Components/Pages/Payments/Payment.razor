@@ -13,10 +13,7 @@
 
 <h3>Pagamentos</h3>
 
-@* <a href="servicesorderadd" class="btn btn-primary active mb-3 text-center" role="button" data-bs-toggle="button" aria-pressed="true">
-    <i class="fas fa-plus"> Adicionar</i>
-</a> *@
-<div>
+    <div>
         <div class="row col-md-12 d-md-inline-flex mt-5">
             <div class="col-md-4">
                 <label for="email" class="form-label">Número:</label>
@@ -84,7 +81,7 @@
     </table>
 </div>
 
-<Modal @ref="Modal"></Modal>
+<PaymentModal @ref="Modal"></PaymentModal>
 
 @code{
 
@@ -92,7 +89,7 @@
     
     public List<ServiceOrder>? filterServiceOrders{ get; set; }
     public PaymentFilter? filter { get; set; }
-    private Modal? Modal { get; set; }
+    private PaymentModal? Modal { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -111,10 +108,9 @@
     public  void OpenModal(Guid id)
     {
         var serviceOrder = serviceOrderService.GetById(id);
-        var prodQuant = JsonSerializer.Deserialize<List<ProductsUsed>>(serviceOrder!.ProductsUsed!);
-        Modal!.Products = new List<ProductsUsed>();
-        Modal!.Products.AddRange(prodQuant!);
-        Modal!.Open();
+        Modal.Payment = new PayServiceOrder();
+        if(serviceOrder is not null)
+            Modal!.Open(serviceOrder);
     }
 
     public void Edit(Guid id)
