@@ -1,50 +1,54 @@
 @using AutoRepairShop.Components.Pages.Modals
 @using System.Globalization
+@using System.Text.Json
 
-<div class="modal @ModalClass" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:@ModalDisplay">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pagamento</h5>
-        <button type="button" class="btn-close" title="Fechar" data-bs-dismiss="modal" @onclick = "(() => Close())" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row col-md-12 mt-5">
-            <div class="col-md-6">
-                <label class="label">N° Ordem: @Payment.OrderId</label>      
-            </div>
-            <div class="col-md-6">
-                <label class="label">Valor Total: @Payment.TotalValue</label>      
-            </div>
-        </div>
-        <div class="row col-md-12 mt-5">
-            <div>
-                <label class="label">Forma de Pagamento</label>
-                <div class="input-group align-items-center">
-                    <input type="decimal" class="form-control border-secondary"  @bind-value = "@Payment.PaymentShape" placeholder="Senha"/>
-                </div>        
-            </div>
-            <div class="mt-3">
-                <label class="label">Valor Recebido</label>
-                <div class="input-group align-items-center">
-                    <input class="form-control border-secondary" @onchange ="(() => Refresh())" type="decimal" placeholder="Confirmar senha" value="@receivedValue"/>
+@if(Payment is not null)
+{
+    <div class="modal @ModalClass" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:@ModalDisplay">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pagamento</h5>
+                    <button type="button" class="btn-close" title="Fechar" data-bs-dismiss="modal" @onclick = "(() => Close())" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-md-12 mt-5">
+                        <div class="col-md-6">
+                            <label class="label">N° Ordem: @Payment?.OrderId</label>      
+                        </div>
+                        <div class="col-md-6">
+                            <label class="label">Valor Total: R$ @String.Format("{0:0.00}",Payment?.TotalValue).Replace(".", ",")</label>      
+                        </div>
+                    </div>
+                    <div class="row col-md-12 mt-5">
+                        <div class="col-md-5">
+                            <label class="label">Forma de Pagamento</label>
+                            <div class="input-group align-items-center">
+                                <input type="decimal" class="form-control border-secondary"  @bind-value = "@Payment.PaymentShape" placeholder="Senha"/>
+                            </div>        
+                        </div>
+                        <div class="col-md-4">
+                            <label class="label">Valor Recebido</label>
+                            <div class="input-group align-items-center">
+                                <input class="form-control border-secondary" type="decimal" placeholder="Confirmar senha" @onfocusout ="(() => Refresh())" @bind-value="@receivedValue"/>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="label">Troco</label>
+                            <div class="input-group align-items-center">
+                                <input class="form-control border-secondary" disabled type="decimal" @bind="@Payment.Change"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" title="Fechar" @onclick = "(() => Close())" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" title="Confirmar" >Confirmar</button>
                 </div>
             </div>
-            <div class="mt-3">
-                <label class="label">Troco</label>
-                <div class="input-group align-items-center">
-                    <input class="form-control border-secondary" disabled type="decimal" @bind="@Payment.Change"/>
-                </div>
-            </div>
         </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" title="Fechar" @onclick = "(() => Close())" data-bs-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary" title="Confirmar" >Confirmar</button>
-      </div>
     </div>
-</div>
+}
 
 @code{
 
@@ -58,6 +62,14 @@
     public PayServiceOrder? Payment { get; set; }
     public void Open(ServiceOrder serviceOrder)
     {
+        Payment!.OrderId = serviceOrder.OrderNumber;
+        Payment.Id = Guid.NewGuid();
+        Payment.TotalValue = 0;
+        var products = JsonSerializer.Deserialize<List<ProductsUsed>>(serviceOrder!.ProductsUsed!);
+        if (products is not null)
+            foreach(var prod in products)
+                Payment.TotalValue += (decimal)prod!.TotalValue!;
+
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;

@@ -4,7 +4,9 @@ public partial class PayServiceOrder
 
     #region  Properties 
 
-    public int? OrderId { get; set;}
+    public Guid Id { get; set; }
+
+    public long? OrderId { get; set;}
 
     public string? PaymentMethod { get; set;}
 

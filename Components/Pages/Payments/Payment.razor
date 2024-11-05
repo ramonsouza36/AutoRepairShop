@@ -102,13 +102,14 @@
 
         filter = new PaymentFilter();
         filterServiceOrders = serviceOrders;
+        Modal = new PaymentModal();
         await Task.CompletedTask;
     }
 
     public  void OpenModal(Guid id)
     {
         var serviceOrder = serviceOrderService.GetById(id);
-        Modal.Payment = new PayServiceOrder();
+        Modal!.Payment = new PayServiceOrder();
         if(serviceOrder is not null)
             Modal!.Open(serviceOrder);
     }
@@ -142,6 +143,5 @@
 
         else
             filterServiceOrders = serviceOrders;
-
     }
 }
