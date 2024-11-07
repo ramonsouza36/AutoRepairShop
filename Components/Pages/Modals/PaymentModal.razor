@@ -1,6 +1,8 @@
 @using AutoRepairShop.Components.Pages.Modals
 @using System.Globalization
 @using System.Text.Json
+@inject PayServiceOrderService payServiceOrderService
+@inject ServiceOrderService serviceOrderService
 
 @if(Payment is not null)
 {
@@ -24,7 +26,7 @@
                         <div class="col-md-5">
                             <label class="label">Forma de Pagamento</label>
                             <div class="input-group align-items-center">
-                                <input type="decimal" class="form-control border-secondary"  @bind-value = "@Payment.PaymentShape" placeholder="Senha"/>
+                                <input type="decimal" class="form-control border-secondary"  @bind-value = "@Payment.PaymentShape" placeholder="Forma"/>
                             </div>        
                         </div>
                         <div class="col-md-4">
@@ -43,7 +45,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" title="Fechar" @onclick = "(() => Close())" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" title="Confirmar" >Confirmar</button>
+                    <button type="button" class="btn btn-primary" title="Confirmar" @onclick = "(() => AddPayment())">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -82,6 +84,15 @@
         ModalClass = "";
         ShowBackdrop = false;
         StateHasChanged();
+    }
+
+    public async Task AddPayment()
+    {
+        var so = serviceOrderService.GetByNumber((long)Payment!.OrderId!);
+        so.Paid = true;
+        so.PaymentDate = DateTime.Parse((DateTime.Now.Date).ToString());
+        //serviceOrderService.Update(so);
+        await payServiceOrderService.Add(Payment!);
     }
 
     public void Refresh()

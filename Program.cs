@@ -47,6 +47,7 @@ builder.Services.AddScoped<ServiceOrderService>();
 builder.Services.AddScoped<UserService>();  
 builder.Services.AddScoped<RoleService>();  
 builder.Services.AddScoped<LoginService>(); 
+builder.Services.AddScoped<PayServiceOrderService>(); 
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => {  options.DetailedErrors = true; });  
 var app = builder.Build();
 
