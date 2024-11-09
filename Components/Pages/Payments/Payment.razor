@@ -63,14 +63,14 @@
                         {
                             <td class="fs-5 text-center">Sim</td>
                         }
-                        <td class="fs-5 text-center">@serviceOrder.PaymentDate.Date</td>
+                        <td class="fs-5 text-center">@serviceOrder.PaymentDate.Date.ToString("dd/MM/yyyy")</td>
                         <td class="fs-5 text-center"> 
                             <div class="divBotoes d-flex justify-content-end">
                                 <a title="Editar" class="btn btn-secondary text-right float-right me-2" role="button" data-bs-toggle="button" @onclick="(() => Edit(serviceOrder.Id))">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @onclick = "(() => OpenModal(serviceOrder.Id))">
-                                    <i class="fas fa-eye"/>
+                                    <i class="fas fa-dollar-sign"/>
                                 </button>
                             </div>
                         </td>

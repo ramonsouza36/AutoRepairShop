@@ -6,6 +6,7 @@ public class AutoRepairDataContext : IdentityDbContext
 {
     public AutoRepairDataContext(DbContextOptions<AutoRepairDataContext> options) : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     public DbSet<Vehicle> Vehicles { get; set; }

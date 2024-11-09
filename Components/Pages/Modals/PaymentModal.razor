@@ -91,7 +91,7 @@
         var so = serviceOrderService.GetByNumber((long)Payment!.OrderId!);
         so.Paid = true;
         so.PaymentDate = DateTime.Parse((DateTime.Now.Date).ToString());
-        //serviceOrderService.Update(so);
+        serviceOrderService.Update(so);
         await payServiceOrderService.Add(Payment!);
     }
 
