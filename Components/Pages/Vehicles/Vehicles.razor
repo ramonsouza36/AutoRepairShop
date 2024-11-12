@@ -66,6 +66,14 @@
         </tbody>
     </table>
 </div>
+<div>
+    @if(filterVehicles is not null){
+                for(int i = 1; i <= pageTotal; i++)
+                {   
+                    <button @onclick="(() => Paginated(i))">@i</button>
+                }
+        }
+</div>
 @code{
 
     public List<Vehicle>? vehicles { get; set; }
@@ -74,12 +82,24 @@
 
     public VehicleFilter? filter { get; set; }
 
+    private int page = 1;
+
+    private int pageQuantity = 3;
+    
+    private int pageTotal { get; set; }
+
     protected override async Task OnParametersSetAsync()
     {
         vehicles = vehicleService.GetAll().ToList();
         filterVehicles = vehicles;
         await Task.CompletedTask;
         filter = new VehicleFilter();
+        if((filterVehicles.Count() % pageQuantity) == 0)
+            pageTotal = filterVehicles.Count() / pageQuantity;
+        else
+            pageTotal = (filterVehicles.Count() / pageQuantity) + 1;
+        Paginated(1);
+        //pageTotal = Math.Round(res);
     }
 
     public void Filter()
@@ -107,5 +127,10 @@
     {
         await vehicleService.DeleteAsync(vehicle);
         navManager.Refresh(true);
+    }
+
+    private void Paginated(int pageNumber)
+    {
+        filterVehicles = vehicles.Skip(--pageNumber).Take(pageQuantity).ToList();
     }
 }
