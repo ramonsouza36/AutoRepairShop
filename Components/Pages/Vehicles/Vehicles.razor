@@ -66,13 +66,11 @@
         </tbody>
     </table>
 </div>
-<div>
-    @if(filterVehicles is not null){
-                for(int i = 1; i <= pageTotal; i++)
-                {   
-                    <button @onclick="(() => Paginated(i))">@i</button>
-                }
-        }
+<div class="row col-md-12">
+    <div class="col-md-2">
+        <button @onclick="(() => Previous())">Anterior</button>
+        <button @onclick="(() => Next())">Próxima</button>    
+    </div>
 </div>
 @code{
 
@@ -91,14 +89,15 @@
     protected override async Task OnParametersSetAsync()
     {
         vehicles = vehicleService.GetAll().ToList();
-        filterVehicles = vehicles;
+        filterVehicles = vehicles!.Skip((0 * pageQuantity)).Take(pageQuantity).ToList();;
         await Task.CompletedTask;
         filter = new VehicleFilter();
-        if((filterVehicles.Count() % pageQuantity) == 0)
-            pageTotal = filterVehicles.Count() / pageQuantity;
+        if((vehicles.Count() % pageQuantity) == 0)
+            pageTotal = vehicles.Count() / pageQuantity;
         else
-            pageTotal = (filterVehicles.Count() / pageQuantity) + 1;
-        Paginated(1);
+            pageTotal = (vehicles.Count() / pageQuantity) + 1;
+        
+        
         //pageTotal = Math.Round(res);
     }
 
@@ -129,8 +128,29 @@
         navManager.Refresh(true);
     }
 
-    private void Paginated(int pageNumber)
+    private void Next()
     {
-        filterVehicles = vehicles.Skip(--pageNumber).Take(pageQuantity).ToList();
+        if(page == 0)
+            page = 1;
+
+        if(page >= pageTotal)
+            page = pageTotal-1;
+        
+        filterVehicles = vehicles!.Skip((page * pageQuantity)).Take(pageQuantity).ToList();
+        
+        if(page < pageTotal )
+            page++;
+    }
+
+    private void Previous()
+    {
+        if(page == pageTotal)
+            page = pageTotal - 2;
+        else if (page == 1)
+            page = 0;
+
+        filterVehicles = vehicles!.Skip((page * pageQuantity)).Take(pageQuantity).ToList();
+        if(page > 1 )
+            page--;
     }
 }
