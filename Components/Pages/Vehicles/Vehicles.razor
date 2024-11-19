@@ -92,7 +92,7 @@
     protected override async Task OnParametersSetAsync()
     {
         vehicles = vehicleService.GetAll().ToList();
-        filterVehicles = vehicles!.Skip((0 * pageQuantity)).Take(pageQuantity).ToList();;
+        filterVehicles = vehicles!.Skip((0 * pageQuantity)).Take(pageQuantity).ToList();
         await Task.CompletedTask;
         filter = new VehicleFilter();
         if((vehicles.Count() % pageQuantity) == 0)

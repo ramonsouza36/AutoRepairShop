@@ -80,7 +80,15 @@
         </tbody>
     </table>
 </div>
-
+<div class="row col-md-12">
+    <div class="col-md-2">
+        <button class="btn btn-secondary" @onclick="(() => Previous())"><i class="fas fa-caret-left fa-lg"/></button>
+        <button class="btn btn-secondary" @onclick="(() => Next())"><i class="fas fa-caret-right fa-lg"/></button>    
+    </div>
+    <div class="col-md-10 text-right">
+        <label class="d-flex flex-row-reverse mt-2">@pageCurrent/@pageTotal</label>
+    </div>
+</div>
 <PaymentModal @ref="Modal"></PaymentModal>
 
 @code{
@@ -90,6 +98,11 @@
     public List<ServiceOrder>? filterServiceOrders{ get; set; }
     public PaymentFilter? filter { get; set; }
     private PaymentModal? Modal { get; set; }
+    private int pageCurrent = 1;
+
+    private int pageQuantity = 3;
+    
+    private int pageTotal { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -101,8 +114,14 @@
         }
 
         filter = new PaymentFilter();
-        filterServiceOrders = serviceOrders;
+        filterServiceOrders = serviceOrders.Skip((0 * pageQuantity)).Take(pageQuantity).ToList();
         Modal = new PaymentModal();
+
+        if((serviceOrders.Count() % pageQuantity) == 0)
+            pageTotal = serviceOrders.Count() / pageQuantity;
+        else
+            pageTotal = (serviceOrders.Count() / pageQuantity) + 1;
+
         await Task.CompletedTask;
     }
 
@@ -143,5 +162,26 @@
 
         else
             filterServiceOrders = serviceOrders;
+    }
+
+    private void Next()
+    {
+        if(pageCurrent == 0)
+            pageCurrent = 1;
+
+        if(pageCurrent >= pageTotal)
+            pageCurrent = pageTotal-1;
+        
+        filterServiceOrders = serviceOrders!.Skip((pageCurrent * pageQuantity)).Take(pageQuantity).ToList();
+        
+        if(pageCurrent < pageTotal )
+            pageCurrent++;
+    }
+
+    private void Previous()
+    {
+        filterServiceOrders = serviceOrders!.Skip(((pageCurrent-2) * pageQuantity)).Take(pageQuantity).ToList();
+        if(pageCurrent > 1 )
+            pageCurrent--;
     }
 }
