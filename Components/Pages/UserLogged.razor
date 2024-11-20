@@ -10,10 +10,10 @@
 <div class="dropdown ms-2">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
         aria-haspopup="true" aria-expanded="false" @onclick = "(() => ChangeVisibility())">
-        Opções
+        <i class="fas fa-cog"> Opções</i>
     </button>
-    <div class="dropdown-menu @visibility" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item ms-0"><i class="fas fa-pencil-alt"> Editar</i></a>
+    <div class="dropdown-menu me-5 @visibility" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item ms-0" href="/usuariosadd/@id"><i class="fas fa-pencil-alt"> Editar</i></a>
         <a class="dropdown-item ms-0" href="logout"><i class="fas fa-sign-out-alt" >Logout</i></a>
     </div>
 </div>
@@ -22,11 +22,8 @@
 
     private HttpContext? httpContext;
 
-    
-    private void Test(){
-        Console.WriteLine("d");
-    }
-
+    [Parameter]
+    public string? id { get; set; }
     public string visibility = "d-none";
 
     private void ChangeVisibility()

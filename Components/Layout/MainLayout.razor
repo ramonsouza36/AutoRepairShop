@@ -2,6 +2,7 @@
 @using AutoRepairShop.Components.Layout
 @using AutoRepairShop.Components.Pages
 @using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 @inject NavigationManager navManager;
 @inject UserManager<IdentityUser> userManager;
 <div class="page">
@@ -13,7 +14,7 @@
                 <main>
                     <div class="top-row px-4">
                         Olá, @context?.User?.Identity?.Name
-                        <UserLogged/>
+                        <UserLogged id="@context?.User?.FindFirst(ClaimTypes.NameIdentifier).Value"/>
                     </div>
                     <article class="content px-4">
                         @Body
@@ -35,10 +36,3 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
-
-
-@code{
-    private void Test(){
-        Console.WriteLine("d");
-    }
-}
