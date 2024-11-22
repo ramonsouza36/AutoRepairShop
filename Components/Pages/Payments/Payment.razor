@@ -128,7 +128,7 @@
     public  void OpenModal(Guid id)
     {
         var serviceOrder = serviceOrderService.GetById(id);
-        Modal!.Payment = new PayServiceOrder();
+        //Modal!.Payment = new PayServiceOrder();
         if(serviceOrder is not null)
             Modal!.Open(serviceOrder);
     }

@@ -26,7 +26,7 @@
                         <div class="col-md-5">
                             <label class="label">Forma de Pagamento</label>
                             <div class="input-group align-items-center">
-                                <input type="decimal" class="form-control border-secondary"  @bind-value = "@Payment.PaymentShape" placeholder="Forma"/>
+                                <input type="decimal" class="form-control border-secondary"  @bind-value = "@Payment!.PaymentShape" placeholder="Forma"/>
                             </div>        
                         </div>
                         <div class="col-md-4">
@@ -64,6 +64,7 @@
     public PayServiceOrder? Payment { get; set; }
     public void Open(ServiceOrder serviceOrder)
     {
+        this.Payment = new PayServiceOrder();
         Payment!.OrderId = serviceOrder.OrderNumber;
         Payment.Id = Guid.NewGuid();
         Payment.TotalValue = 0;

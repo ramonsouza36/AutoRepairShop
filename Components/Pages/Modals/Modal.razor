@@ -39,8 +39,12 @@
 
     [Parameter]
     public List<ProductsUsed>? Products { get; set; }
-    public void Open()
+    public void Open(List<ProductsUsed>? ProductsUsed)
     {
+        
+        this.Products = new List<ProductsUsed>();
+        if(ProductsUsed is not null && ProductsUsed.Count > 0)
+          this.Products.AddRange(ProductsUsed);
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;

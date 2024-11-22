@@ -29,7 +29,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     public TEntity GetById(Guid id)
     {
-        return _dbSet.Find(id);
+        return _dbSet!.Find(id)!;
     }
 
     public IEnumerable<TEntity> GetAll()
